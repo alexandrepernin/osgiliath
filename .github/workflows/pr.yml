@@ -36,7 +36,7 @@ jobs:
           node-version-file: '.nvmrc'
           cache: 'pnpm'
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: pnpm install --no-frozen-lockfile
       - name: 💾 Cache Nx cache
         id: package-cache
         uses: actions/cache@v3
