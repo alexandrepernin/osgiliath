@@ -33,7 +33,7 @@ const SignIn = (): JSX.Element => {
           <Auth
             supabaseClient={supabaseClient}
             providers={['google']}
-            redirectTo="http://localhost:3000/"
+            redirectTo={process.env.NEXT_PUBLIC_URL ?? ''}
             magicLink={false}
             appearance={{
               theme: ThemeSupa,
