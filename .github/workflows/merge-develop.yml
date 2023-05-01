@@ -1,10 +1,10 @@
 on:
   push:
     branches:
-      - main
+      - develop
 
-name: 🚀 Deploy main
-concurrency: deploy_main
+name: 🚀 Deploy Develop
+concurrency: deploy_develop
 
 permissions:
   id-token: write # this is required for AWS https://github.com/aws-actions/configure-aws-credentials#usage
