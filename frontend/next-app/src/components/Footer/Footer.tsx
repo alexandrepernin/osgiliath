@@ -5,7 +5,6 @@ import {
   SimpleGrid,
   Stack,
   Text,
-  useColorModeValue,
 } from '@chakra-ui/react';
 import { ReactNode } from 'react';
 
@@ -39,10 +38,7 @@ const ListHeader = ({ children }: { children: ReactNode }) => {
 };
 
 export const Footer = (): JSX.Element => (
-  <Box
-    bg={useColorModeValue('gray.50', 'gray.900')}
-    color={useColorModeValue('gray.700', 'gray.200')}
-  >
+  <Box bg="gray.50" color="gray.700">
     <Container as={Stack} maxW="6xl" py={10}>
       <SimpleGrid
         templateColumns={{ sm: '1fr 1fr', md: '2fr 1fr 1fr 1fr 1fr' }}

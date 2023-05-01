@@ -1,9 +1,9 @@
-import { Box, Button, Heading, Text } from '@chakra-ui/react';
+import { Box, Button, Flex, Heading, Text } from '@chakra-ui/react';
 
 import { Pages } from 'constants/pages';
 
-const NotFound = (): JSX.Element => {
-  return (
+const NotFound = (): JSX.Element => (
+  <Flex minH="100vh" align="center" justify="center" bg="gray.50">
     <Box textAlign="center" py={10} px={6}>
       <Heading
         display="inline-block"
@@ -32,7 +32,7 @@ const NotFound = (): JSX.Element => {
         Go to Home
       </Button>
     </Box>
-  );
-};
+  </Flex>
+);
 
 export default NotFound;

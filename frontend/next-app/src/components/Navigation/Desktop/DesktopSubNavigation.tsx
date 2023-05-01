@@ -1,13 +1,5 @@
 import { ChevronRightIcon } from '@chakra-ui/icons';
-import {
-  Box,
-  Flex,
-  Icon,
-  Link,
-  Stack,
-  Text,
-  useColorModeValue,
-} from '@chakra-ui/react';
+import { Box, Flex, Icon, Link, Stack, Text } from '@chakra-ui/react';
 
 import { NavItem } from 'types/NavItem';
 
@@ -23,7 +15,7 @@ export const DesktopSubNav = ({
       display="block"
       p={2}
       rounded="md"
-      _hover={{ bg: useColorModeValue('pink.50', 'gray.900') }}
+      _hover={{ bg: 'pink.50' }}
     >
       <Stack direction="row" align="center">
         <Box>
