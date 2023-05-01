@@ -5,7 +5,6 @@ import {
   PopoverContent,
   PopoverTrigger,
   Stack,
-  useColorModeValue,
 } from '@chakra-ui/react';
 
 import { NAV_ITEMS } from 'constants/navItems';
@@ -13,9 +12,9 @@ import { NAV_ITEMS } from 'constants/navItems';
 import { DesktopSubNav } from './DesktopSubNavigation';
 
 export const DesktopNav = (): JSX.Element => {
-  const linkColor = useColorModeValue('gray.600', 'gray.200');
-  const linkHoverColor = useColorModeValue('gray.800', 'white');
-  const popoverContentBgColor = useColorModeValue('white', 'gray.800');
+  const linkColor = 'gray.600';
+  const linkHoverColor = 'gray.800';
+  const popoverContentBgColor = 'white';
 
   return (
     <Stack direction="row" spacing={4}>

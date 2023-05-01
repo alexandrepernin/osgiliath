@@ -1,4 +1,3 @@
-import 'styles/globals.css';
 import { ChakraProvider } from '@chakra-ui/react';
 import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs';
 import { Session, SessionContextProvider } from '@supabase/auth-helpers-react';

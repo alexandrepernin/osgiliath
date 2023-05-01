@@ -1,31 +1,28 @@
-import {
-  Flex,
-  Heading,
-  Stack,
-  Text,
-  useColorModeValue,
-} from '@chakra-ui/react';
+import { Flex, Heading, Stack, Text } from '@chakra-ui/react';
+import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs';
 import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react';
 import { Auth } from '@supabase/auth-ui-react';
 import { ThemeSupa } from '@supabase/auth-ui-shared';
+import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
-const SignIn = (): JSX.Element => {
+import { Pages } from 'constants/pages';
+
+const SignUp = (): JSX.Element => {
   const router = useRouter();
   const user = useUser();
   const supabaseClient = useSupabaseClient();
-  const color = useColorModeValue('gray.50', 'gray.800');
 
   useEffect(() => {
     if (user) {
-      void router.replace('/');
+      void router.replace(Pages.HOME);
     }
   }, [user, router]);
 
   if (!user) {
     return (
-      <Flex minH="100vh" align="center" justify="center" bg={color}>
+      <Flex minH="100vh" align="center" justify="center" bg="gray.50">
         <Stack spacing={8} mx="auto" maxW="lg" py={12} px={6}>
           <Stack align="center">
             <Heading fontSize="4xl">Sign up to your account</Heading>
@@ -66,4 +63,24 @@ const SignIn = (): JSX.Element => {
   return <></>;
 };
 
-export default SignIn;
+export const getServerSideProps: GetServerSideProps = async ctx => {
+  const supabase = createServerSupabaseClient(ctx);
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+
+  if (session) {
+    return {
+      redirect: {
+        destination: Pages.HOME,
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
+};
+
+export default SignUp;

@@ -9,7 +9,6 @@ import {
   Stack,
   Text,
   useBreakpointValue,
-  useColorModeValue,
   useDisclosure,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
@@ -25,14 +24,14 @@ export const Navigation = (): JSX.Element => {
   return (
     <Box>
       <Flex
-        bg={useColorModeValue('white', 'gray.800')}
-        color={useColorModeValue('gray.600', 'white')}
+        bg="white"
+        color="gray.600"
         minH="70px"
         py={{ base: 2 }}
         px={[10, 15, 15, 20]}
         borderBottom={1}
         borderStyle="solid"
-        borderColor={useColorModeValue('gray.200', 'gray.900')}
+        borderColor="gray.200"
         align="center"
       >
         <Flex
@@ -53,7 +52,7 @@ export const Navigation = (): JSX.Element => {
           <Text
             textAlign={useBreakpointValue({ base: 'center', md: 'left' })}
             fontFamily="heading"
-            color={useColorModeValue('gray.800', 'white')}
+            color="gray.800"
           >
             Logo
           </Text>

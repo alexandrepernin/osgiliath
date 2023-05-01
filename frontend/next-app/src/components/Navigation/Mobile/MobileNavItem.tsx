@@ -6,7 +6,6 @@ import {
   Link,
   Stack,
   Text,
-  useColorModeValue,
   useDisclosure,
 } from '@chakra-ui/react';
 
@@ -31,10 +30,7 @@ export const MobileNavItem = ({
           textDecoration: 'none',
         }}
       >
-        <Text
-          fontWeight={600}
-          color={useColorModeValue('gray.600', 'gray.200')}
-        >
+        <Text fontWeight={600} color="gray.600">
           {label}
         </Text>
         {children && (
@@ -54,7 +50,7 @@ export const MobileNavItem = ({
           pl={4}
           borderLeft={1}
           borderStyle="solid"
-          borderColor={useColorModeValue('gray.200', 'gray.700')}
+          borderColor="gray.200"
           align="start"
         >
           {children?.map(child => (
