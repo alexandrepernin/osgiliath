@@ -5,13 +5,14 @@ import { Auth } from '@supabase/auth-ui-react';
 import { ThemeSupa } from '@supabase/auth-ui-shared';
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { Pages } from 'constants/pages';
 
 const SignUp = (): JSX.Element => {
   const router = useRouter();
   const user = useUser();
+  const [ssr, setSsr] = useState(true);
   const supabaseClient = useSupabaseClient();
 
   useEffect(() => {
@@ -20,7 +21,11 @@ const SignUp = (): JSX.Element => {
     }
   }, [user, router]);
 
-  if (!user) {
+  useEffect(() => {
+    setSsr(false);
+  }, []);
+
+  if (!user && !ssr) {
     return (
       <Flex minH="100vh" align="center" justify="center" bg="gray.50">
         <Stack spacing={8} mx="auto" maxW="lg" py={12} px={6}>
