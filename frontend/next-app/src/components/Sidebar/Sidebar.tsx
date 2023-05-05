@@ -8,12 +8,14 @@ import {
   FlexProps,
   Icon,
   Link,
-  Text,
   useDisclosure,
 } from '@chakra-ui/react';
 import { User } from '@supabase/auth-helpers-nextjs';
+import Image from 'next/image';
 import { ReactNode, ReactText } from 'react';
 import { IconType } from 'react-icons';
+
+import { CompanyLogo } from 'icons';
 
 import { LinkItems } from './LinkItems';
 import { MobileNav } from './MobileNavigation';
@@ -71,10 +73,8 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
       h="full"
       {...rest}
     >
-      <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
-        <Text fontSize="2xl" fontFamily="monospace" fontWeight="bold">
-          Logo
-        </Text>
+      <Flex h="20" alignItems="center" mx="2" justifyContent="space-between">
+        <Image priority src={CompanyLogo as string} alt="Company Logo" />
         <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
       </Flex>
       {LinkItems.map(link => (
@@ -100,13 +100,12 @@ const NavItem = ({ icon, children, ...rest }: NavItemProps) => {
       <Flex
         align="center"
         p="4"
-        mx="4"
-        borderRadius="lg"
+        mx="0"
         role="group"
         cursor="pointer"
         _hover={{
-          bg: 'cyan.400',
-          color: 'white',
+          bg: 'gray.100',
+          color: 'black',
         }}
         {...rest}
       >
@@ -115,7 +114,7 @@ const NavItem = ({ icon, children, ...rest }: NavItemProps) => {
             mr="4"
             fontSize="16"
             _groupHover={{
-              color: 'white',
+              color: 'black',
             }}
             as={icon}
           />

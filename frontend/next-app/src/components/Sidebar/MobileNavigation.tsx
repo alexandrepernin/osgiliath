@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import {
   Avatar,
   Box,
@@ -15,9 +14,11 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { User } from '@supabase/auth-helpers-nextjs';
+import Image from 'next/image';
 import { FiBell, FiChevronDown, FiMenu } from 'react-icons/fi';
 
 import { useLogout } from 'hooks/useLogout';
+import { CompanyLogo } from 'icons';
 
 interface MobileProps extends FlexProps {
   onOpen: () => void;
@@ -49,16 +50,9 @@ export const MobileNav = ({
         aria-label="open menu"
         icon={<FiMenu />}
       />
-
-      <Text
-        display={{ base: 'flex', md: 'none' }}
-        fontSize="2xl"
-        fontFamily="monospace"
-        fontWeight="bold"
-      >
-        Logo
-      </Text>
-
+      <Box display={{ base: 'flex', md: 'none' }}>
+        <Image priority src={CompanyLogo as string} alt="Company Logo" />
+      </Box>
       <HStack spacing={{ base: '0', md: '6' }}>
         <IconButton
           size="lg"
@@ -74,7 +68,14 @@ export const MobileNav = ({
               _focus={{ boxShadow: 'none' }}
             >
               <HStack>
-                <Avatar size="sm" src={user.user_metadata.picture ?? ''} />
+                <Avatar
+                  name={user.email}
+                  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                  src={user.user_metadata.picture ?? ''}
+                  backgroundColor="gray.100"
+                  getInitials={(name: string) => name[0] ?? ''}
+                  size="md"
+                />
                 <VStack
                   display={{ base: 'none', md: 'flex' }}
                   alignItems="flex-start"
