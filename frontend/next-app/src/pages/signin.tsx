@@ -28,7 +28,15 @@ const SignIn = (): JSX.Element => {
   if (!user && !ssr) {
     return (
       <Flex minH="100vh" align="center" justify="center" bg="gray.50">
-        <Stack spacing={8} mx="auto" maxW="lg" py={12} px={6}>
+        <Stack
+          spacing={8}
+          mx="auto"
+          maxW="lg"
+          py={12}
+          px={6}
+          bg="white"
+          borderRadius="30px"
+        >
           <Stack align="center">
             <Heading fontSize="4xl">Sign in to your account</Heading>
             <Text fontSize="lg" color="gray.600">
@@ -48,6 +56,16 @@ const SignIn = (): JSX.Element => {
                     brand: '#404040',
                     brandAccent: '#52525b',
                   },
+                },
+              },
+            }}
+            localization={{
+              variables: {
+                sign_up: {
+                  social_provider_text: 'Sign up with Google',
+                },
+                sign_in: {
+                  social_provider_text: 'Sign in with Google',
                 },
               },
             }}
