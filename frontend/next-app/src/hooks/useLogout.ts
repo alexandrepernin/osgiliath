@@ -1,4 +1,3 @@
-import { useSupabaseClient } from '@supabase/auth-helpers-react';
 import { useRouter } from 'next/router';
 import { useCallback } from 'react';
 
@@ -8,14 +7,14 @@ interface Return {
   logout: () => Promise<void>;
 }
 
+//to do : implement logout function
 export const useLogout = (): Return => {
-  const supabaseClient = useSupabaseClient();
   const router = useRouter();
 
   const logout = useCallback(async () => {
-    await supabaseClient.auth.signOut();
+    await Promise.resolve();
     await router.push(Pages.SIGNIN);
-  }, [router, supabaseClient]);
+  }, [router]);
 
   return { logout };
 };

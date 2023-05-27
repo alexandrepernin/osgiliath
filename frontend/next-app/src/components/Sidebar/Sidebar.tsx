@@ -10,7 +10,6 @@ import {
   Link,
   useDisclosure,
 } from '@chakra-ui/react';
-import { User } from '@supabase/auth-helpers-nextjs';
 import Image from 'next/image';
 import { ReactNode, ReactText } from 'react';
 import { IconType } from 'react-icons';
@@ -21,10 +20,8 @@ import { LinkItems } from './LinkItems';
 import { MobileNav } from './MobileNavigation';
 
 export const SidebarWithHeader = ({
-  user,
   children,
 }: {
-  user: User;
   children: ReactNode;
 }): JSX.Element => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -49,7 +46,7 @@ export const SidebarWithHeader = ({
           <SidebarContent onClose={onClose} />
         </DrawerContent>
       </Drawer>
-      <MobileNav onOpen={onOpen} user={user} />
+      <MobileNav onOpen={onOpen} />
       <Box ml={{ base: 0, md: 60 }} p="4">
         {children}
       </Box>
