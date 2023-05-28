@@ -1,6 +1,6 @@
 import { ChakraProvider } from '@chakra-ui/react';
 import { AppProps } from 'next/app';
-import { SessionProvider } from 'next-auth/react';
+import { SessionProvider as AuthProvider } from 'next-auth/react';
 
 const App = ({
   Component,
@@ -9,11 +9,11 @@ const App = ({
 }: AppProps): JSX.Element => {
   return (
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    <SessionProvider session={nextAuthSession}>
+    <AuthProvider session={nextAuthSession}>
       <ChakraProvider>
         <Component {...pageProps} />
       </ChakraProvider>
-    </SessionProvider>
+    </AuthProvider>
   );
 };
 
