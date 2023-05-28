@@ -35,24 +35,24 @@ module.exports = {
       },
     ],
     'prefer-const': 'error',
-    'import/order': [
-      'error',
-      {
-        pathGroups: [{ pattern: '@osgiliath/**', group: 'unknown' }],
-        groups: [
-          ['external', 'builtin'],
-          'unknown',
-          'internal',
-          ['parent', 'sibling', 'index'],
-        ],
-        alphabetize: {
-          order: 'asc',
-          caseInsensitive: false,
-        },
-        'newlines-between': 'always',
-        pathGroupsExcludedImportTypes: ['builtin'],
-      },
-    ],
+    // 'import/order': [
+    //   'error',
+    //   {
+    //     pathGroups: [{ pattern: '@osgiliath/**', group: 'unknown' }],
+    //     groups: [
+    //       ['external', 'builtin'],
+    //       'unknown',
+    //       'internal',
+    //       ['parent', 'sibling', 'index'],
+    //     ],
+    //     alphabetize: {
+    //       order: 'asc',
+    //       caseInsensitive: false,
+    //     },
+    //     'newlines-between': 'always',
+    //     pathGroupsExcludedImportTypes: ['builtin'],
+    //   },
+    // ],
     'sort-imports': [
       'error',
       {

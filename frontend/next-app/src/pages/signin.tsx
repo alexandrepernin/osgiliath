@@ -16,10 +16,13 @@ import {
 } from '@chakra-ui/react';
 import { FcGoogle } from 'react-icons/fc';
 
+import { useSignin } from 'hooks/useSignin';
 import { useGoogleSignin } from 'hooks/useGoogleSignin';
+import { Pages } from 'constants/pages';
 
 const Page = (): JSX.Element => {
   const { signinWithGoogle } = useGoogleSignin();
+  const { onSubmit, handleInputChange, formValues } = useSignin();
 
   return (
     <Flex
@@ -54,33 +57,50 @@ const Page = (): JSX.Element => {
               </Center>
             </Button>
             <Divider />
-            <FormControl id="email">
-              <FormLabel>Email address</FormLabel>
-              <Input type="email" />
-            </FormControl>
-            <FormControl id="password">
-              <FormLabel>Password</FormLabel>
-              <Input type="password" />
-            </FormControl>
-            <Stack spacing={10}>
-              <Stack
-                direction={{ base: 'column', sm: 'row' }}
-                align="start"
-                justify="space-between"
-              >
-                <Checkbox>Remember me</Checkbox>
-                <Link color="blue.400">Forgot password?</Link>
+            <form onSubmit={event => void onSubmit(event)}>
+              <FormControl id="email">
+                <FormLabel>Email address</FormLabel>
+                <Input
+                  required
+                  type="email"
+                  name="email"
+                  value={formValues.email}
+                  onChange={handleInputChange}
+                />
+              </FormControl>
+              <FormControl id="password">
+                <FormLabel>Password</FormLabel>
+                <Input
+                  required
+                  type="password"
+                  name="password"
+                  value={formValues.password}
+                  onChange={handleInputChange}
+                />
+              </FormControl>
+              <Stack spacing={10}>
+                <Stack
+                  direction={{ base: 'column', sm: 'row' }}
+                  align="start"
+                  justify="space-between"
+                >
+                  <Checkbox>Remember me</Checkbox>
+                  <Link color="blue.400" href={Pages.FORGOT_PASSWORD}>
+                    Forgot password?
+                  </Link>
+                </Stack>
+                <Button
+                  bg="blue.400"
+                  color="white"
+                  _hover={{
+                    bg: 'blue.500',
+                  }}
+                  type="submit"
+                >
+                  Sign in
+                </Button>
               </Stack>
-              <Button
-                bg="blue.400"
-                color="white"
-                _hover={{
-                  bg: 'blue.500',
-                }}
-              >
-                Sign in
-              </Button>
-            </Stack>
+            </form>
           </Stack>
         </Box>
       </Stack>
