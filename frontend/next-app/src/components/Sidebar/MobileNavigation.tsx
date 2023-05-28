@@ -13,7 +13,6 @@ import {
   Text,
   VStack,
 } from '@chakra-ui/react';
-import { User } from '@supabase/auth-helpers-nextjs';
 import Image from 'next/image';
 import { FiBell, FiChevronDown, FiMenu } from 'react-icons/fi';
 
@@ -22,14 +21,14 @@ import { CompanyLogo } from 'icons';
 
 interface MobileProps extends FlexProps {
   onOpen: () => void;
-  user: User;
 }
-export const MobileNav = ({
-  onOpen,
-  user,
-  ...rest
-}: MobileProps): JSX.Element => {
+
+export const MobileNav = ({ onOpen, ...rest }: MobileProps): JSX.Element => {
   const { logout } = useLogout();
+  const user = {
+    email: 'alex.e.pernin@gmail.com',
+    user_metadata: { picture: '', name: 'Alexandre Pernin' },
+  };
 
   return (
     <Flex
@@ -71,7 +70,7 @@ export const MobileNav = ({
                 <Avatar
                   name={user.email}
                   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-                  src={user.user_metadata.picture ?? ''}
+                  src={user.user_metadata.picture}
                   backgroundColor="gray.100"
                   getInitials={(name: string) => name[0] ?? ''}
                   size="md"

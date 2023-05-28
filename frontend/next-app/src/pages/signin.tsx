@@ -1,102 +1,91 @@
-import { Flex, Heading, Stack, Text } from '@chakra-ui/react';
-import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs';
-import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react';
-import { Auth } from '@supabase/auth-ui-react';
-import { ThemeSupa } from '@supabase/auth-ui-shared';
-import { GetServerSideProps } from 'next';
-import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import {
+  Box,
+  Button,
+  Center,
+  Checkbox,
+  Divider,
+  Flex,
+  FormControl,
+  FormLabel,
+  Heading,
+  Input,
+  Link,
+  Stack,
+  Text,
+  useColorModeValue,
+} from '@chakra-ui/react';
+import { FcGoogle } from 'react-icons/fc';
 
-import { Pages } from 'constants/pages';
+import { useGoogleSignin } from 'hooks/useGoogleSignin';
 
-const SignIn = (): JSX.Element => {
-  const router = useRouter();
-  const user = useUser();
-  const [ssr, setSsr] = useState(true);
-  const supabaseClient = useSupabaseClient();
+const Page = (): JSX.Element => {
+  const { signinWithGoogle } = useGoogleSignin();
 
-  useEffect(() => {
-    if (user) {
-      void router.replace(Pages.HOME);
-    }
-  }, [user, router]);
-
-  useEffect(() => {
-    setSsr(false);
-  }, []);
-
-  if (!user && !ssr) {
-    return (
-      <Flex minH="100vh" align="center" justify="center" bg="gray.50">
-        <Stack
-          spacing={8}
-          mx="auto"
-          maxW="lg"
-          py={12}
-          px={6}
-          bg="white"
-          borderRadius="30px"
-        >
-          <Stack align="center">
-            <Heading fontSize="4xl">Sign in to your account</Heading>
-            <Text fontSize="lg" color="gray.600">
-              to enjoy all of our cool features ✌️
-            </Text>
-          </Stack>
-          <Auth
-            supabaseClient={supabaseClient}
-            providers={['google']}
-            redirectTo={process.env.NEXT_PUBLIC_URL ?? ''}
-            magicLink={false}
-            appearance={{
-              theme: ThemeSupa,
-              variables: {
-                default: {
-                  colors: {
-                    brand: '#404040',
-                    brandAccent: '#52525b',
-                  },
-                },
-              },
-            }}
-            localization={{
-              variables: {
-                sign_up: {
-                  social_provider_text: 'Sign up with Google',
-                },
-                sign_in: {
-                  social_provider_text: 'Sign in with Google',
-                },
-              },
-            }}
-            theme="default"
-          />
+  return (
+    <Flex
+      minH="100vh"
+      align="center"
+      justify="center"
+      bg={useColorModeValue('gray.50', 'gray.800')}
+    >
+      <Stack spacing={8} mx="auto" maxW="lg" py={12} px={6}>
+        <Stack align="center">
+          <Heading fontSize="4xl">Sign in to your account</Heading>
+          <Text fontSize="lg" color="gray.600">
+            to enjoy all of our cool <Link color="blue.400">features</Link> ✌️
+          </Text>
         </Stack>
-      </Flex>
-    );
-  }
-
-  return <></>;
+        <Box
+          rounded="lg"
+          bg={useColorModeValue('white', 'gray.700')}
+          boxShadow="lg"
+          p={8}
+        >
+          <Stack spacing={4}>
+            <Button
+              w="full"
+              maxW="md"
+              variant="outline"
+              leftIcon={<FcGoogle />}
+              onClick={() => void signinWithGoogle()}
+            >
+              <Center>
+                <Text>Sign in with Google</Text>
+              </Center>
+            </Button>
+            <Divider />
+            <FormControl id="email">
+              <FormLabel>Email address</FormLabel>
+              <Input type="email" />
+            </FormControl>
+            <FormControl id="password">
+              <FormLabel>Password</FormLabel>
+              <Input type="password" />
+            </FormControl>
+            <Stack spacing={10}>
+              <Stack
+                direction={{ base: 'column', sm: 'row' }}
+                align="start"
+                justify="space-between"
+              >
+                <Checkbox>Remember me</Checkbox>
+                <Link color="blue.400">Forgot password?</Link>
+              </Stack>
+              <Button
+                bg="blue.400"
+                color="white"
+                _hover={{
+                  bg: 'blue.500',
+                }}
+              >
+                Sign in
+              </Button>
+            </Stack>
+          </Stack>
+        </Box>
+      </Stack>
+    </Flex>
+  );
 };
 
-export const getServerSideProps: GetServerSideProps = async ctx => {
-  const supabase = createServerSupabaseClient(ctx);
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
-
-  if (session) {
-    return {
-      redirect: {
-        destination: Pages.HOME,
-        permanent: false,
-      },
-    };
-  }
-
-  return {
-    props: {},
-  };
-};
-
-export default SignIn;
+export default Page;
