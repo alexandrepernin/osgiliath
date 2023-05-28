@@ -15,6 +15,7 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 import { FcGoogle } from 'react-icons/fc';
+import NextLink from 'next/link';
 
 import { useSignin } from 'hooks/useSignin';
 import { useGoogleSignin } from 'hooks/useGoogleSignin';
@@ -35,7 +36,7 @@ const Page = (): JSX.Element => {
         <Stack align="center">
           <Heading fontSize="4xl">Sign in to your account</Heading>
           <Text fontSize="lg" color="gray.600">
-            to enjoy all of our cool <Link color="blue.400">features</Link> ✌️
+            to enjoy all of our cool features ✌️
           </Text>
         </Stack>
         <Box
@@ -85,20 +86,32 @@ const Page = (): JSX.Element => {
                   justify="space-between"
                 >
                   <Checkbox>Remember me</Checkbox>
-                  <Link color="blue.400" href={Pages.FORGOT_PASSWORD}>
+                  <Link
+                    as={NextLink}
+                    color="gray.600"
+                    href={Pages.FORGOT_PASSWORD}
+                  >
                     Forgot password?
                   </Link>
                 </Stack>
                 <Button
-                  bg="blue.400"
+                  bg="gray.700"
                   color="white"
                   _hover={{
-                    bg: 'blue.500',
+                    bg: 'gray.600',
                   }}
                   type="submit"
                 >
                   Sign in
                 </Button>
+                <Stack>
+                  <Text align="center">
+                    Don&apos;t have an account?{' '}
+                    <Link as={NextLink} color="gray.600" href={Pages.SIGNUP}>
+                      Sign up
+                    </Link>
+                  </Text>
+                </Stack>
               </Stack>
             </form>
           </Stack>

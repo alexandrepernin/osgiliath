@@ -15,6 +15,8 @@ import {
   Text,
   useColorModeValue,
 } from '@chakra-ui/react';
+import NextLink from 'next/link';
+
 import { Pages } from 'constants/pages';
 import { useSignup } from 'hooks/useSignup';
 import { useState } from 'react';
@@ -96,10 +98,10 @@ const Page = (): JSX.Element => {
                 <Button
                   loadingText="Submitting"
                   size="lg"
-                  bg="blue.400"
+                  bg="gray.700"
                   color="white"
                   _hover={{
-                    bg: 'blue.500',
+                    bg: 'gray.600',
                   }}
                   type="submit"
                 >
@@ -108,8 +110,8 @@ const Page = (): JSX.Element => {
               </Stack>
               <Stack pt={6}>
                 <Text align="center">
-                  Already a user?
-                  <Link color="blue.400" href={Pages.SIGNIN}>
+                  Already a user?{' '}
+                  <Link as={NextLink} color="gray.600" href={Pages.SIGNIN}>
                     Login
                   </Link>
                 </Text>

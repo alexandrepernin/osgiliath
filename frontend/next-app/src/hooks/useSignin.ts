@@ -33,7 +33,6 @@ export const useSignin = (): Return => {
   const onSubmit = useCallback(
     async (e: React.FormEvent) => {
       e.preventDefault();
-      setFormValues({ email: '', password: '' });
 
       const response = await signIn('credentials', {
         redirect: false,

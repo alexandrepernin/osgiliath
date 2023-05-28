@@ -44,10 +44,10 @@ const Page = (): JSX.Element => {
         </FormControl>
         <Stack spacing={6}>
           <Button
-            bg="blue.400"
+            bg="gray.700"
             color="white"
             _hover={{
-              bg: 'blue.500',
+              bg: 'gray.600',
             }}
           >
             Submit
