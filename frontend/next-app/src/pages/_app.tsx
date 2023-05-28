@@ -1,27 +1,19 @@
 import { ChakraProvider } from '@chakra-ui/react';
-import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs';
-import { Session, SessionContextProvider } from '@supabase/auth-helpers-react';
 import { AppProps } from 'next/app';
-import { useState } from 'react';
+import { SessionProvider as AuthProvider } from 'next-auth/react';
 
 const App = ({
   Component,
-  pageProps,
-}: AppProps<{
-  initialSession: Session;
-}>): JSX.Element => {
-  // Create a new supabase browser client on every first render.
-  const [supabaseClient] = useState(() => createBrowserSupabaseClient());
-
+  // @ts-ignore test next js auth
+  pageProps: { session: nextAuthSession, ...pageProps },
+}: AppProps): JSX.Element => {
   return (
-    <SessionContextProvider
-      supabaseClient={supabaseClient}
-      initialSession={pageProps.initialSession}
-    >
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    <AuthProvider session={nextAuthSession}>
       <ChakraProvider>
         <Component {...pageProps} />
       </ChakraProvider>
-    </SessionContextProvider>
+    </AuthProvider>
   );
 };
 
