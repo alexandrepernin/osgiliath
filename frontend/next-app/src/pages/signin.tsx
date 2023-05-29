@@ -15,11 +15,15 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 import { FcGoogle } from 'react-icons/fc';
+import NextLink from 'next/link';
 
+import { useSignin } from 'hooks/useSignin';
 import { useGoogleSignin } from 'hooks/useGoogleSignin';
+import { Pages } from 'constants/pages';
 
 const Page = (): JSX.Element => {
   const { signinWithGoogle } = useGoogleSignin();
+  const { onSubmit, handleInputChange, formValues } = useSignin();
 
   return (
     <Flex
@@ -32,7 +36,7 @@ const Page = (): JSX.Element => {
         <Stack align="center">
           <Heading fontSize="4xl">Sign in to your account</Heading>
           <Text fontSize="lg" color="gray.600">
-            to enjoy all of our cool <Link color="blue.400">features</Link> ✌️
+            to enjoy all of our cool features ✌️
           </Text>
         </Stack>
         <Box
@@ -54,33 +58,62 @@ const Page = (): JSX.Element => {
               </Center>
             </Button>
             <Divider />
-            <FormControl id="email">
-              <FormLabel>Email address</FormLabel>
-              <Input type="email" />
-            </FormControl>
-            <FormControl id="password">
-              <FormLabel>Password</FormLabel>
-              <Input type="password" />
-            </FormControl>
-            <Stack spacing={10}>
-              <Stack
-                direction={{ base: 'column', sm: 'row' }}
-                align="start"
-                justify="space-between"
-              >
-                <Checkbox>Remember me</Checkbox>
-                <Link color="blue.400">Forgot password?</Link>
+            <form onSubmit={event => void onSubmit(event)}>
+              <FormControl id="email">
+                <FormLabel>Email address</FormLabel>
+                <Input
+                  required
+                  type="email"
+                  name="email"
+                  value={formValues.email}
+                  onChange={handleInputChange}
+                />
+              </FormControl>
+              <FormControl id="password">
+                <FormLabel>Password</FormLabel>
+                <Input
+                  required
+                  type="password"
+                  name="password"
+                  value={formValues.password}
+                  onChange={handleInputChange}
+                />
+              </FormControl>
+              <Stack spacing={10}>
+                <Stack
+                  direction={{ base: 'column', sm: 'row' }}
+                  align="start"
+                  justify="space-between"
+                >
+                  <Checkbox>Remember me</Checkbox>
+                  <Link
+                    as={NextLink}
+                    color="gray.600"
+                    href={Pages.FORGOT_PASSWORD}
+                  >
+                    Forgot password?
+                  </Link>
+                </Stack>
+                <Button
+                  bg="gray.700"
+                  color="white"
+                  _hover={{
+                    bg: 'gray.600',
+                  }}
+                  type="submit"
+                >
+                  Sign in
+                </Button>
+                <Stack>
+                  <Text align="center">
+                    Don&apos;t have an account?{' '}
+                    <Link as={NextLink} color="gray.600" href={Pages.SIGNUP}>
+                      Sign up
+                    </Link>
+                  </Text>
+                </Stack>
               </Stack>
-              <Button
-                bg="blue.400"
-                color="white"
-                _hover={{
-                  bg: 'blue.500',
-                }}
-              >
-                Sign in
-              </Button>
-            </Stack>
+            </form>
           </Stack>
         </Box>
       </Stack>

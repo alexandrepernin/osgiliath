@@ -4,13 +4,8 @@ import { useSession } from 'next-auth/react';
 
 import { SidebarWithHeader } from 'components/Sidebar';
 import { Pages } from 'constants/pages';
-import { prisma } from 'services/database/prisma';
 
-interface Props {
-  homes: string;
-}
-
-const Home = ({ homes }: Props): JSX.Element => {
+const Home = (): JSX.Element => {
   const router = useRouter();
   const { data: session, status } = useSession({
     required: true,
@@ -22,10 +17,9 @@ const Home = ({ homes }: Props): JSX.Element => {
   return (
     <>
       {status === 'loading' ? (
-        <div>loading...</div>
+        <></>
       ) : (
         <SidebarWithHeader>
-          <>{JSON.stringify(homes)}</>
           <>{JSON.stringify(session.user ?? '')}</>
         </SidebarWithHeader>
       )}
@@ -33,13 +27,11 @@ const Home = ({ homes }: Props): JSX.Element => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps<Props> = async () => {
-  const homes = await prisma.home.findMany();
+export const getServerSideProps: GetServerSideProps = async () => {
+  await Promise.resolve();
 
   return {
-    props: {
-      homes: JSON.stringify(homes),
-    },
+    props: {},
   };
 };
 
