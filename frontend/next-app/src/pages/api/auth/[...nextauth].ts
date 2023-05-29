@@ -65,26 +65,23 @@ export const authOptions = {
   ],
   callbacks: {
     session: ({ session, token }) => {
-      return {
+      const forwardedSession = {
         ...session,
         user: {
           ...session.user,
           id: token.id,
-          randomKey: token.randomKey,
         },
       };
+
+      return forwardedSession;
     },
     jwt: ({ token, user }) => {
+      // user is defined only when the user signs in. Afterwards, only token is defined.
       // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions, @typescript-eslint/no-unnecessary-condition
       if (user) {
-        const { id } = user as unknown as {
-          id: string;
-        };
+        token.id = user.id;
 
-        return {
-          ...token,
-          id,
-        };
+        return token;
       }
 
       return token;
