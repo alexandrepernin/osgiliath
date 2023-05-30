@@ -2,11 +2,7 @@ import {
   Button,
   Center,
   Flex,
-  FormControl,
   Heading,
-  HStack,
-  PinInput,
-  PinInputField,
   Stack,
   useColorModeValue,
 } from '@chakra-ui/react';
@@ -31,43 +27,30 @@ const Page = (): JSX.Element => {
       >
         <Center>
           <Heading lineHeight={1.1} fontSize={{ base: '2xl', md: '3xl' }}>
-            Verify your Email
+            Please check your mail
           </Heading>
         </Center>
         <Center
           fontSize={{ base: 'sm', sm: 'md' }}
           color={useColorModeValue('gray.800', 'gray.400')}
         >
-          We have sent code to your email
+          We have sent you a verification email
         </Center>
-        <Center
+        {/* <Center
           fontSize={{ base: 'sm', sm: 'md' }}
           fontWeight="bold"
           color={useColorModeValue('gray.800', 'gray.400')}
         >
-          username@mail.com
-        </Center>
-        <FormControl>
-          <Center>
-            <HStack>
-              <PinInput>
-                <PinInputField />
-                <PinInputField />
-                <PinInputField />
-                <PinInputField />
-              </PinInput>
-            </HStack>
-          </Center>
-        </FormControl>
+        </Center> */}
         <Stack spacing={6}>
           <Button
-            bg="blue.400"
+            bg="gray.700"
             color="white"
             _hover={{
-              bg: 'blue.500',
+              bg: 'gray.600',
             }}
           >
-            Verify
+            Resend
           </Button>
         </Stack>
       </Stack>

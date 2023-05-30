@@ -1,7 +1,6 @@
 import { signIn } from 'next-auth/react';
 import { ChangeEvent, useCallback, useState } from 'react';
 
-import { Pages } from 'constants/pages';
 import { signup } from 'services/api-client/signup';
 
 interface FormValues {
@@ -40,7 +39,10 @@ export const useSignup = (): Return => {
       try {
         await signup(formValues);
         setLoading(false);
-        await signIn(undefined, { callbackUrl: Pages.HOME });
+        await signIn('email', {
+          callbackUrl: process.env.NEXT_PUBLIC_URL ?? '',
+          email: formValues.email,
+        });
       } catch (error: unknown) {
         setLoading(false);
         setError("Can't create account");

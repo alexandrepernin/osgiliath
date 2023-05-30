@@ -6,3 +6,8 @@ export enum Pages {
   FORGOT_PASSWORD = '/forgot-password',
   HOME = '/',
 }
+
+export enum ApiRoutes {
+  SIGNUP = '/api/register',
+  FORGOT_PASSWORD = '/api/forgot-password',
+}
