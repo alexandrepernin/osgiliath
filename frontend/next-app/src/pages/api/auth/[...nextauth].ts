@@ -3,6 +3,8 @@ import { compare } from 'bcryptjs';
 import NextAuth, { AuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import GoogleProvider from 'next-auth/providers/google';
+import EmailProvider from 'next-auth/providers/email';
+import { sendVerificationRequest } from 'services/emails/sendVerificationRequest';
 
 import { prisma } from 'services/database/prisma';
 
@@ -13,10 +15,15 @@ export const authOptions = {
   },
   pages: {
     signIn: '/signin',
-    signOut: '/',
-    error: '/',
+    signOut: '/signin',
+    error: '/404',
+    verifyRequest: '/verify-email',
   },
   providers: [
+    EmailProvider({
+      sendVerificationRequest,
+      maxAge: 10 * 60, // 10 minutes
+    }),
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID ?? '',
       clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? '',
