@@ -9,7 +9,7 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 import { ChangeEvent, useCallback, useState } from 'react';
-import { forgotPassword } from 'services/api-client/forgot-password';
+import { forgotPassword } from 'services/api-client/forgotPassword';
 
 const Page = (): JSX.Element => {
   const [email, setEmail] = useState('');

@@ -4,6 +4,22 @@ import { sendForgotPassword } from 'services/emails/sendForgotPassword';
 
 import sendStatus from 'utils/status';
 
+export type ForgotPasswordAPIPostData = {
+  email: string;
+};
+
+const isForgotPasswordAPIPostData = (
+  data: unknown,
+): data is ForgotPasswordAPIPostData =>
+  data !== null && typeof data === 'object' && 'email' in data;
+
+const handleError = (error: unknown, res: NextApiResponse<string>) => {
+  res.setHeader('Content-Type', 'text/plain');
+  res
+    .status(500)
+    .send(error instanceof Error ? error.message : (error as string));
+};
+
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== 'POST') {
@@ -38,19 +54,3 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 export default handler;
-
-const handleError = (error: unknown, res: NextApiResponse<string>) => {
-  res.setHeader('Content-Type', 'text/plain');
-  res
-    .status(500)
-    .send(error instanceof Error ? error.message : (error as string));
-};
-
-export type ForgotPasswordAPIPostData = {
-  email: string;
-};
-
-const isForgotPasswordAPIPostData = (
-  data: unknown,
-): data is ForgotPasswordAPIPostData =>
-  data !== null && typeof data === 'object' && 'email' in data;

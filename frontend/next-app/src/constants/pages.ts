@@ -10,4 +10,5 @@ export enum Pages {
 export enum ApiRoutes {
   SIGNUP = '/api/register',
   FORGOT_PASSWORD = '/api/forgot-password',
+  RESET_PASSWORD = '/api/reset-password',
 }
