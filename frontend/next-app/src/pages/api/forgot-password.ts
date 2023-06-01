@@ -1,4 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
+import jwt from 'jsonwebtoken';
 import { sendForgotPassword } from 'services/emails/sendForgotPassword';
 
 import sendStatus from 'utils/status';
@@ -18,7 +19,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   const { email } = req.body;
-  const token = 'toto';
+
+  const jwtPayload = {
+    email,
+  };
+  const secretKey = process.env.NEXTAUTH_SECRET ?? '';
+  const token = jwt.sign(jwtPayload, secretKey, {
+    algorithm: 'HS256',
+    expiresIn: '1h',
+  });
 
   try {
     await sendForgotPassword(email, token);
