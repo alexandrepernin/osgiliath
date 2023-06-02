@@ -17,7 +17,7 @@ export const sendVerificationRequest = async ({
       encoding: 'utf8',
     });
     const emailTemplate = Handlebars.compile(emailFile);
-    const mailStatus = await transporter.sendMail({
+    await transporter.sendMail({
       from: `"🏝️ Malibou" ${process.env.SMTP_AUTH_USER ?? ''}`,
       to: identifier,
       subject: 'Your sign-in link for Malibou',
@@ -27,8 +27,6 @@ export const sendVerificationRequest = async ({
         email: identifier,
       }),
     });
-
-    console.log({ mailStatus });
   } catch (error) {
     console.error(error);
   }

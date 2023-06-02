@@ -22,7 +22,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const hashed_password = await hash(password, 12);
 
   try {
-    console.log({ email, hashed_password });
     await prisma.user.create({
       data: {
         email: email.toLowerCase(),

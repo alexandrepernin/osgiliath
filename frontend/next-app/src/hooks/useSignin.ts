@@ -1,8 +1,9 @@
 import { signIn } from 'next-auth/react';
-import { ChangeEvent, useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
 
 import { Pages } from 'constants/pages';
 import { useRouter } from 'next/router';
+import { SubmitHandler } from 'react-hook-form';
 
 interface FormValues {
   email: string;
@@ -10,44 +11,32 @@ interface FormValues {
 }
 
 interface Return {
-  handleInputChange: (event: ChangeEvent<HTMLInputElement>) => void;
-  onSubmit: (e: React.FormEvent) => Promise<void>;
-  formValues: FormValues;
+  onSubmit: SubmitHandler<FormValues>;
+  customErrorMessage?: string;
 }
 
 export const useSignin = (): Return => {
-  const [formValues, setFormValues] = useState<FormValues>({
-    email: '',
-    password: '',
-  });
+  const [customErrorMessage, setCustomErrorMessage] = useState('');
   const router = useRouter();
 
-  const handleInputChange = useCallback(
-    (event: ChangeEvent<HTMLInputElement>) => {
-      const { name, value } = event.target as { name: string; value: string };
-      setFormValues({ ...formValues, [name]: value });
-    },
-    [formValues],
-  );
-
-  const onSubmit = useCallback(
-    async (e: React.FormEvent) => {
-      e.preventDefault();
-
+  const onSubmit: SubmitHandler<FormValues> = useCallback(
+    async (data: FormValues) => {
+      setCustomErrorMessage('');
       const response = await signIn('credentials', {
         redirect: false,
-        email: formValues.email,
-        password: formValues.password,
+        email: data.email,
+        password: data.password,
         callbackUrl: Pages.HOME,
       });
       if (response === undefined || response.error !== undefined) {
-        // to do : invalid credentials error message
-        console.log({ response });
+        setCustomErrorMessage('Invalid credentials. Please try again.');
+
+        return;
       }
       await router.push(Pages.HOME);
     },
-    [router, formValues],
+    [router],
   );
 
-  return { handleInputChange, onSubmit, formValues };
+  return { onSubmit, customErrorMessage };
 };

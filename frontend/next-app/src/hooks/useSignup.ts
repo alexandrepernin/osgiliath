@@ -1,5 +1,6 @@
 import { signIn } from 'next-auth/react';
-import { ChangeEvent, useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
+import { SubmitHandler } from 'react-hook-form';
 
 import { signup } from 'services/api-client/signup';
 
@@ -9,47 +10,26 @@ interface FormValues {
 }
 
 interface Return {
-  handleInputChange: (event: ChangeEvent<HTMLInputElement>) => void;
-  onSubmit: (e: React.FormEvent) => Promise<void>;
-  formValues: FormValues;
+  onSubmit: SubmitHandler<FormValues>;
+  customErrorMessage?: string;
 }
 
 export const useSignup = (): Return => {
-  const [, setLoading] = useState(false);
-  const [, setError] = useState('');
-  const [formValues, setFormValues] = useState<FormValues>({
-    email: '',
-    password: '',
-  });
+  const [customErrorMessage, setCustomErrorMessage] = useState('');
 
-  const handleInputChange = useCallback(
-    (event: ChangeEvent<HTMLInputElement>) => {
-      const { name, value } = event.target as { name: string; value: string };
-      setFormValues({ ...formValues, [name]: value });
-    },
-    [formValues],
-  );
+  const onSubmit = useCallback(async ({ email, password }: FormValues) => {
+    setCustomErrorMessage('');
 
-  const onSubmit = useCallback(
-    async (e: React.FormEvent) => {
-      e.preventDefault();
-      setLoading(true);
-      setFormValues({ email: '', password: '' });
+    try {
+      await signup({ email, password });
+      await signIn('email', {
+        callbackUrl: process.env.NEXT_PUBLIC_URL ?? '',
+        email,
+      });
+    } catch (error: unknown) {
+      setCustomErrorMessage("Can't create account");
+    }
+  }, []);
 
-      try {
-        await signup(formValues);
-        setLoading(false);
-        await signIn('email', {
-          callbackUrl: process.env.NEXT_PUBLIC_URL ?? '',
-          email: formValues.email,
-        });
-      } catch (error: unknown) {
-        setLoading(false);
-        setError("Can't create account");
-      }
-    },
-    [formValues],
-  );
-
-  return { handleInputChange, onSubmit, formValues };
+  return { onSubmit, customErrorMessage };
 };

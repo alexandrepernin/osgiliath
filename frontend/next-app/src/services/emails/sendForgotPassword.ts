@@ -5,15 +5,16 @@ export const sendForgotPassword = async (
   token: string,
 ): Promise<void> => {
   try {
-    const mailStatus = await transporter.sendMail({
+    await Promise.resolve();
+    const url = `${
+      process.env.NEXT_PUBLIC_URL ?? ''
+    }reset-password?token=${token}&email=${encodeURI(email)}`;
+    await transporter.sendMail({
       from: process.env.SMTP_AUTH_USER,
       to: [email],
       subject: 'Reset your password',
-      text: `Click on this link to reset your password: ${
-        process.env.NEXT_PUBLIC_URL ?? ''
-      }reset-password?token=${token}`,
+      text: `Click on this link to reset your password: ${url}`,
     });
-    console.log({ mailStatus });
   } catch (error) {
     console.error(error);
   }
