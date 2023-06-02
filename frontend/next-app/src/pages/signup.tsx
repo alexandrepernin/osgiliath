@@ -6,6 +6,7 @@ import {
   Divider,
   Flex,
   FormControl,
+  FormErrorMessage,
   FormLabel,
   Heading,
   Input,
@@ -23,11 +24,22 @@ import { useSignup } from 'hooks/useSignup';
 import { useState } from 'react';
 import { FcGoogle } from 'react-icons/fc';
 import { useGoogleSignin } from 'hooks/useGoogleSignin';
+import { useForm } from 'react-hook-form';
+
+interface SignupFormData {
+  email: string;
+  password: string;
+}
 
 const Page = (): JSX.Element => {
   const [showPassword, setShowPassword] = useState(false);
   const { signinWithGoogle } = useGoogleSignin();
-  const { handleInputChange, onSubmit, formValues } = useSignup();
+  const { onSubmit, customErrorMessage } = useSignup();
+  const {
+    handleSubmit,
+    register,
+    formState: { errors, isSubmitting },
+  } = useForm<SignupFormData>();
 
   return (
     <Flex
@@ -38,9 +50,7 @@ const Page = (): JSX.Element => {
     >
       <Stack spacing={8} mx="auto" maxW="lg" py={12} px={6}>
         <Stack align="center">
-          <Heading fontSize="4xl" textAlign="center">
-            Sign up to your account
-          </Heading>
+          <Heading fontSize="4xl">Sign up to your account</Heading>
           <Text fontSize="lg" color="gray.600">
             to enjoy all of our cool features ✌️
           </Text>
@@ -64,58 +74,83 @@ const Page = (): JSX.Element => {
               </Center>
             </Button>
             <Divider />
-            <form onSubmit={event => void onSubmit(event)}>
-              <Stack spacing={4}>
-                <FormControl id="email" isRequired>
-                  <FormLabel>Email address</FormLabel>
+            {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <FormControl
+                id="email"
+                isInvalid={errors.email?.message !== undefined ? true : false}
+              >
+                <FormLabel>Email address</FormLabel>
+                <Input
+                  type="email"
+                  {...register('email', {
+                    required: 'This field is required',
+                  })}
+                />
+
+                <FormErrorMessage>{errors.email?.message}</FormErrorMessage>
+              </FormControl>
+              <FormControl
+                id="password"
+                isInvalid={
+                  errors.password?.message !== undefined ? true : false
+                }
+              >
+                <FormLabel>Password</FormLabel>
+                <InputGroup>
                   <Input
-                    required
-                    type="email"
-                    name="email"
-                    value={formValues.email}
-                    onChange={handleInputChange}
-                    placeholder="Email address"
+                    type={showPassword ? 'text' : 'password'}
+                    {...register('password', {
+                      required: 'This field is required',
+                      minLength: {
+                        value: 8,
+                        message:
+                          'Your password should be at least 8 characters',
+                      },
+                    })}
                   />
-                </FormControl>
-                <FormControl id="password" isRequired>
-                  <FormLabel>Password</FormLabel>
-                  <InputGroup>
-                    <Input
-                      type={showPassword ? 'text' : 'password'}
-                      name="password"
-                      value={formValues.password}
-                      onChange={handleInputChange}
-                      placeholder="Password"
-                    />
-                    <InputRightElement h="full">
-                      <Button
-                        variant="ghost"
-                        onClick={() => setShowPassword(!showPassword)}
-                      >
-                        {showPassword ? <ViewIcon /> : <ViewOffIcon />}
-                      </Button>
-                    </InputRightElement>
-                  </InputGroup>
-                </FormControl>
-                <Stack spacing={10} pt={2}>
+
+                  <InputRightElement h="full">
+                    <Button
+                      variant="ghost"
+                      onClick={() => setShowPassword(!showPassword)}
+                    >
+                      {showPassword ? <ViewIcon /> : <ViewOffIcon />}
+                    </Button>
+                  </InputRightElement>
+                </InputGroup>
+                <FormErrorMessage>{errors.password?.message}</FormErrorMessage>
+              </FormControl>
+              <Stack spacing={10}>
+                <Stack
+                  direction={{ base: 'column', sm: 'row' }}
+                  align="start"
+                  justify="space-between"
+                >
+                  {' '}
+                </Stack>
+                <Stack direction={{ base: 'column' }} align="start">
                   <Button
-                    loadingText="Submitting"
-                    size="lg"
                     bg="gray.700"
                     color="white"
+                    width={{ base: 'full' }}
                     _hover={{
                       bg: 'gray.600',
                     }}
                     type="submit"
+                    isLoading={isSubmitting}
                   >
                     Sign up
                   </Button>
+                  <Text color="red.500" fontSize="sm">
+                    {customErrorMessage}
+                  </Text>
                 </Stack>
-                <Stack pt={6}>
+                <Stack>
                   <Text align="center">
                     Already a user?{' '}
                     <Link as={NextLink} color="gray.600" href={Pages.SIGNIN}>
-                      Login
+                      Sign in
                     </Link>
                   </Text>
                 </Stack>
