@@ -11,7 +11,7 @@ interface FormValues {
 
 interface Return {
   handleInputChange: (event: ChangeEvent<HTMLInputElement>) => void;
-  onSubmit: (e: React.FormEvent) => Promise<void>;
+  onSubmit: (data: FormValues) => Promise<void>;
   formValues: FormValues;
 }
 
@@ -31,13 +31,11 @@ export const useSignin = (): Return => {
   );
 
   const onSubmit = useCallback(
-    async (e: React.FormEvent) => {
-      e.preventDefault();
-
+    async (data: FormValues) => {
       const response = await signIn('credentials', {
         redirect: false,
-        email: formValues.email,
-        password: formValues.password,
+        email: data.email,
+        password: data.password,
         callbackUrl: Pages.HOME,
       });
       if (response === undefined || response.error !== undefined) {
@@ -46,7 +44,7 @@ export const useSignin = (): Return => {
       }
       await router.push(Pages.HOME);
     },
-    [router, formValues],
+    [router],
   );
 
   return { handleInputChange, onSubmit, formValues };

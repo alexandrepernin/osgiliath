@@ -6,6 +6,7 @@ import {
   Divider,
   Flex,
   FormControl,
+  FormErrorMessage,
   FormLabel,
   Heading,
   Input,
@@ -20,10 +21,18 @@ import NextLink from 'next/link';
 import { useSignin } from 'hooks/useSignin';
 import { useGoogleSignin } from 'hooks/useGoogleSignin';
 import { Pages } from 'constants/pages';
+import { useForm } from 'react-hook-form';
 
 const Page = (): JSX.Element => {
   const { signinWithGoogle } = useGoogleSignin();
-  const { onSubmit, handleInputChange, formValues } = useSignin();
+  const { onSubmit } = useSignin();
+  const {
+    handleSubmit,
+    register,
+    formState: { errors, isSubmitting },
+  } = useForm<{ email: string; password: string }>();
+
+  console.log({ errors });
 
   return (
     <Flex
@@ -58,26 +67,37 @@ const Page = (): JSX.Element => {
               </Center>
             </Button>
             <Divider />
-            <form onSubmit={event => void onSubmit(event)}>
-              <FormControl id="email">
+            {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <FormControl id="email" isInvalid={errors.email}>
                 <FormLabel>Email address</FormLabel>
                 <Input
                   required
                   type="email"
-                  name="email"
-                  value={formValues.email}
-                  onChange={handleInputChange}
+                  {...register('email', {
+                    required: 'This is required',
+                    minLength: {
+                      value: 4,
+                      message: 'Minimum length should be 4',
+                    },
+                  })}
                 />
+                <FormErrorMessage>{errors.email?.message}</FormErrorMessage>
               </FormControl>
-              <FormControl id="password">
+              <FormControl id="password" isInvalid={errors.password}>
                 <FormLabel>Password</FormLabel>
                 <Input
                   required
                   type="password"
-                  name="password"
-                  value={formValues.password}
-                  onChange={handleInputChange}
+                  {...register('password', {
+                    required: 'This is required',
+                    minLength: {
+                      value: 4,
+                      message: 'Minimum length should be 4',
+                    },
+                  })}
                 />
+                <FormErrorMessage>{errors.password?.message}</FormErrorMessage>
               </FormControl>
               <Stack spacing={10}>
                 <Stack
@@ -101,6 +121,7 @@ const Page = (): JSX.Element => {
                     bg: 'gray.600',
                   }}
                   type="submit"
+                  isLoading={isSubmitting}
                 >
                   Sign in
                 </Button>
