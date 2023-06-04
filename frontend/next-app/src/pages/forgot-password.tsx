@@ -2,36 +2,33 @@ import {
   Button,
   Flex,
   FormControl,
+  FormErrorMessage,
   Heading,
   Input,
   Stack,
   Text,
   useColorModeValue,
 } from '@chakra-ui/react';
-import { ChangeEvent, useCallback, useState } from 'react';
-import { forgotPassword } from 'services/api-client/forgotPassword';
+import { useForgotPassword } from 'hooks/useForgotPassword';
+import { useForm } from 'react-hook-form';
+
+interface ForgotPasswordFormData {
+  email: string;
+  password: string;
+}
 
 const Page = (): JSX.Element => {
-  const [email, setEmail] = useState('');
+  const {
+    handleSubmit,
+    register,
+    formState: { errors, isSubmitting },
+  } = useForm<ForgotPasswordFormData>();
 
-  const handleSubmit = useCallback(
-    async (event: React.FormEvent<HTMLFormElement>) => {
-      event.preventDefault();
-      await forgotPassword({ email });
-    },
-    [email],
-  );
-
-  const handleInputChange = useCallback(
-    (event: ChangeEvent<HTMLInputElement>) => {
-      const { value } = event.target as { value: string };
-      setEmail(value);
-    },
-    [],
-  );
+  const { onSubmit } = useForgotPassword();
 
   return (
-    <form onSubmit={event => void handleSubmit(event)}>
+    /* eslint-disable-next-line @typescript-eslint/no-misused-promises */
+    <form onSubmit={handleSubmit(onSubmit)}>
       <Flex
         minH="100vh"
         align="center"
@@ -57,15 +54,17 @@ const Page = (): JSX.Element => {
           >
             You&apos;ll get an email with a reset link
           </Text>
-          <FormControl id="email">
+          <FormControl
+            id="email"
+            isInvalid={errors.email?.message !== undefined ? true : false}
+          >
             <Input
-              placeholder="your-email@example.com"
-              _placeholder={{ color: 'gray.500' }}
               type="email"
-              name="email"
-              value={email}
-              onChange={handleInputChange}
+              {...register('email', {
+                required: 'This field is required',
+              })}
             />
+            <FormErrorMessage>{errors.email?.message}</FormErrorMessage>
           </FormControl>
           <Stack spacing={6}>
             <Button
@@ -75,6 +74,7 @@ const Page = (): JSX.Element => {
                 bg: 'gray.600',
               }}
               type="submit"
+              isLoading={isSubmitting}
             >
               Request Reset
             </Button>
