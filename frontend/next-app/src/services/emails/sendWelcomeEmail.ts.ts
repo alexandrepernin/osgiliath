@@ -2,31 +2,33 @@ import { readFileSync } from 'fs';
 import Handlebars from 'handlebars';
 import path from 'path';
 import { transporter } from './constants';
+import { DefaultUser } from 'next-auth';
 
 const emailsDir = path.resolve(process.cwd(), 'src/emails');
 
-export const sendForgotPassword = async (
-  email: string,
-  token: string,
-): Promise<void> => {
+interface CreateUserEvent {
+  user: DefaultUser;
+}
+
+export const sendWelcomeEmail = async ({
+  user,
+}: CreateUserEvent): Promise<void> => {
+  const { email } = user;
+  if (email === null) {
+    return;
+  }
   try {
-    const emailFile = readFileSync(
-      path.join(emailsDir, 'forgot-password-email.html'),
-      {
-        encoding: 'utf8',
-      },
-    );
+    const emailFile = readFileSync(path.join(emailsDir, 'welcome-email.html'), {
+      encoding: 'utf8',
+    });
     const emailTemplate = Handlebars.compile(emailFile);
-    const resetPasswordUrl = `${
-      process.env.NEXT_PUBLIC_URL ?? ''
-    }reset-password?token=${token}&email=${encodeURI(email)}`;
     await transporter.sendMail({
       from: `"🏝️ Malibou" ${process.env.SMTP_AUTH_USER ?? ''}`,
       to: email,
-      subject: 'Your reset password link for Malibou',
+      subject: 'Welcome to Malibou 🏝️',
       html: emailTemplate({
         base_url: process.env.NEXTAUTH_URL,
-        reset_url: resetPasswordUrl,
+        support_email: process.env.SMTP_AUTH_USER ?? '',
         email,
       }),
     });

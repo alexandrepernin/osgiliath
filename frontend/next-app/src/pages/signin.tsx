@@ -118,10 +118,8 @@ const Page = (): JSX.Element => {
                       {showPassword ? <ViewIcon /> : <ViewOffIcon />}
                     </Button>
                   </InputRightElement>
-                  <FormErrorMessage>
-                    {errors.password?.message}
-                  </FormErrorMessage>
                 </InputGroup>
+                <FormErrorMessage>{errors.password?.message}</FormErrorMessage>
               </FormControl>
               <Stack spacing={10}>
                 <Stack

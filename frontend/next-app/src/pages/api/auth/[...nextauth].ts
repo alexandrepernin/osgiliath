@@ -7,6 +7,7 @@ import EmailProvider from 'next-auth/providers/email';
 import { sendVerificationRequest } from 'services/emails/sendVerificationRequest';
 
 import { prisma } from 'services/database/prisma';
+import { sendWelcomeEmail } from 'services/emails/sendWelcomeEmail.ts';
 
 export const authOptions = {
   adapter: PrismaAdapter(prisma),
@@ -94,6 +95,7 @@ export const authOptions = {
       return token;
     },
   },
+  events: { createUser: sendWelcomeEmail },
 } as AuthOptions;
 
 export default NextAuth(authOptions);
