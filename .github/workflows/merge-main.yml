@@ -1,7 +1,8 @@
-on:
-  push:
-    branches:
-      - main
+# on:
+#   push:
+#     branches:
+#       - main
+on: [workflow_dispatch]
 
 name: 🚀 Deploy main
 concurrency: deploy_main

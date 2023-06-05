@@ -1,1 +1,4 @@
-export { default as CompanyLogo } from './company-logo.svg';
+/* eslint-disable @typescript-eslint/no-var-requires */
+const CompanyLogo = require('./logo.svg') as string;
+
+export { CompanyLogo };
