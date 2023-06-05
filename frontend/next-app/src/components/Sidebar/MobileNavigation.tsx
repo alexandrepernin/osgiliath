@@ -50,7 +50,7 @@ export const MobileNav = ({ onOpen, ...rest }: MobileProps): JSX.Element => {
         icon={<FiMenu />}
       />
       <Box display={{ base: 'flex', md: 'none' }}>
-        <Image priority src={CompanyLogo as string} alt="Company Logo" />
+        <Image priority src={CompanyLogo} alt="Company Logo" />
       </Box>
       <HStack spacing={{ base: '0', md: '6' }}>
         <IconButton

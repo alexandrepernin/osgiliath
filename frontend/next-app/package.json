@@ -19,6 +19,7 @@
     "test-linter": "pnpm linter-base-config && pnpm stylelint-base-config **/*.{ts,tsx}",
     "test-type": "tsc --noEmit --emitDeclarationOnly false",
     "test-unit": "jest --maxWorkers=2 --collectCoverage --logHeapUsage --passWithNoTests",
+    "generate-prisma-types": "prisma generate",
     "vercel-build": "prisma generate && prisma migrate deploy && next build"
   },
   "dependencies": {
