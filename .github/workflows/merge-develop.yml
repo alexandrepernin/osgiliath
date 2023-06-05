@@ -1,7 +1,8 @@
-on:
-  push:
-    branches:
-      - develop
+# on:
+#   push:
+#     branches:
+#       - develop
+on: [workflow_dispatch]
 
 name: 🚀 Deploy Develop
 concurrency: deploy_develop

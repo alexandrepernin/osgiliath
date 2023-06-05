@@ -71,7 +71,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
       {...rest}
     >
       <Flex h="20" alignItems="center" mx="2" justifyContent="space-between">
-        <Image priority src={CompanyLogo as string} alt="Company Logo" />
+        <Image priority src={CompanyLogo} alt="Company Logo" />
         <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
       </Flex>
       {LinkItems.map(link => (
