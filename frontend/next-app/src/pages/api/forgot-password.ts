@@ -1,6 +1,8 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import jwt from 'jsonwebtoken';
 import { sendForgotPassword } from 'services/emails/sendForgotPassword';
+import { prisma } from 'services/database/prisma';
+import { setTimeout } from 'timers/promises';
 
 import sendStatus from 'utils/status';
 
@@ -35,6 +37,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   const { email } = req.body;
+  const user = await prisma.user.findUnique({
+    where: { email },
+  });
+
+  if (user === null) {
+    await setTimeout(1000);
+    sendStatus(res, 200);
+
+    return;
+  }
 
   const jwtPayload = {
     email,

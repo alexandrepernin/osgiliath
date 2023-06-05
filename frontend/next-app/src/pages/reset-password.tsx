@@ -1,42 +1,38 @@
+import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 import {
   Button,
   Flex,
   FormControl,
+  FormErrorMessage,
   FormLabel,
   Heading,
   Input,
+  InputGroup,
+  InputRightElement,
   Stack,
+  Text,
   useColorModeValue,
 } from '@chakra-ui/react';
-import { GetServerSideProps } from 'next';
-import { ChangeEvent, useCallback, useState } from 'react';
-import { resetPassword } from 'services/api-client/resetPassword';
+import { useResetPassword } from 'hooks/useResetPassword';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
 
-interface Props {
-  token: string | null;
+interface ResetPasswordFormData {
+  password: string;
 }
 
-const Page = ({ token }: Props): JSX.Element => {
-  const [password, setPassword] = useState('');
-
-  const handleSubmit = useCallback(
-    async (event: React.FormEvent<HTMLFormElement>) => {
-      event.preventDefault();
-      await resetPassword({ password, token });
-    },
-    [password, token],
-  );
-
-  const handleInputChange = useCallback(
-    (event: ChangeEvent<HTMLInputElement>) => {
-      const { value } = event.target as { value: string };
-      setPassword(value);
-    },
-    [],
-  );
+const Page = (): JSX.Element => {
+  const [showPassword, setShowPassword] = useState(false);
+  const { onSubmit, customErrorMessage } = useResetPassword();
+  const {
+    handleSubmit,
+    register,
+    formState: { errors, isSubmitting },
+  } = useForm<ResetPasswordFormData>();
 
   return (
-    <form onSubmit={event => void handleSubmit(event)}>
+    /* eslint-disable-next-line @typescript-eslint/no-misused-promises */
+    <form onSubmit={handleSubmit(onSubmit)}>
       <Flex
         minH="100vh"
         align="center"
@@ -56,27 +52,49 @@ const Page = ({ token }: Props): JSX.Element => {
           <Heading lineHeight={1.1} fontSize={{ base: '2xl', md: '3xl' }}>
             Enter new password
           </Heading>
-          <FormControl id="password" isRequired>
+          <FormControl
+            id="password"
+            isInvalid={errors.password?.message !== undefined ? true : false}
+          >
             <FormLabel>Password</FormLabel>
-            <Input
-              required
-              type="password"
-              name="password"
-              value={password}
-              onChange={handleInputChange}
-            />
+            <InputGroup>
+              <Input
+                type={showPassword ? 'text' : 'password'}
+                {...register('password', {
+                  required: 'This field is required',
+                  minLength: {
+                    value: 8,
+                    message: 'Your password should be at least 8 characters',
+                  },
+                })}
+              />
+              <InputRightElement h="full">
+                <Button
+                  variant="ghost"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? <ViewIcon /> : <ViewOffIcon />}
+                </Button>
+              </InputRightElement>
+            </InputGroup>
+            <FormErrorMessage>{errors.password?.message}</FormErrorMessage>
           </FormControl>
-          <Stack spacing={6}>
+          <Stack direction={{ base: 'column' }} align="start">
             <Button
               bg="gray.700"
               color="white"
+              width={{ base: 'full' }}
               _hover={{
                 bg: 'gray.600',
               }}
               type="submit"
+              isLoading={isSubmitting}
             >
-              Submit
+              Reset password
             </Button>
+            <Text color="red.500" fontSize="sm">
+              {customErrorMessage}
+            </Text>
           </Stack>
         </Stack>
       </Flex>
@@ -85,15 +103,3 @@ const Page = ({ token }: Props): JSX.Element => {
 };
 
 export default Page;
-
-export const getServerSideProps: GetServerSideProps = async context => {
-  await Promise.resolve();
-  const { query } = context;
-  const { token } = query;
-
-  return {
-    props: {
-      token: typeof token !== 'string' ? null : token,
-    },
-  };
-};

@@ -1,4 +1,4 @@
-import { signIn } from 'next-auth/react';
+import { signIn, SignInResponse } from 'next-auth/react';
 import { useCallback, useState } from 'react';
 
 import { Pages } from 'constants/pages';
@@ -22,13 +22,13 @@ export const useSignin = (): Return => {
   const onSubmit: SubmitHandler<FormValues> = useCallback(
     async (data: FormValues) => {
       setCustomErrorMessage('');
-      const response = await signIn('credentials', {
+      const response: SignInResponse | undefined = await signIn('credentials', {
         redirect: false,
         email: data.email,
         password: data.password,
         callbackUrl: Pages.HOME,
       });
-      if (response === undefined || response.error !== undefined) {
+      if (response === undefined || !response.ok) {
         setCustomErrorMessage('Invalid credentials. Please try again.');
 
         return;

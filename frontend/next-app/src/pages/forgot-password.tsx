@@ -1,48 +1,49 @@
+import { CheckCircleIcon } from '@chakra-ui/icons';
 import {
+  Box,
   Button,
   Flex,
   FormControl,
+  FormErrorMessage,
   Heading,
   Input,
   Stack,
   Text,
-  useColorModeValue,
 } from '@chakra-ui/react';
-import { ChangeEvent, useCallback, useState } from 'react';
-import { forgotPassword } from 'services/api-client/forgotPassword';
+import { useForgotPassword } from 'hooks/useForgotPassword';
+import { useForm } from 'react-hook-form';
+
+interface ForgotPasswordFormData {
+  email: string;
+  password: string;
+}
 
 const Page = (): JSX.Element => {
-  const [email, setEmail] = useState('');
+  const {
+    handleSubmit,
+    register,
+    formState: { errors, isSubmitting, isSubmitSuccessful },
+  } = useForm<ForgotPasswordFormData>();
 
-  const handleSubmit = useCallback(
-    async (event: React.FormEvent<HTMLFormElement>) => {
-      event.preventDefault();
-      await forgotPassword({ email });
-    },
-    [email],
-  );
+  const { onSubmit } = useForgotPassword();
 
-  const handleInputChange = useCallback(
-    (event: ChangeEvent<HTMLInputElement>) => {
-      const { value } = event.target as { value: string };
-      setEmail(value);
-    },
-    [],
-  );
+  if (isSubmitSuccessful) {
+    return (
+      <Flex minH="100vh" align="center" justify="center">
+        <Success />
+      </Flex>
+    );
+  }
 
   return (
-    <form onSubmit={event => void handleSubmit(event)}>
-      <Flex
-        minH="100vh"
-        align="center"
-        justify="center"
-        bg={useColorModeValue('gray.50', 'gray.800')}
-      >
+    /* eslint-disable-next-line @typescript-eslint/no-misused-promises */
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <Flex minH="100vh" align="center" justify="center" bg="gray.50">
         <Stack
           spacing={4}
           w="full"
           maxW="md"
-          bg={useColorModeValue('white', 'gray.700')}
+          bg="white"
           rounded="xl"
           boxShadow="lg"
           p={6}
@@ -51,21 +52,20 @@ const Page = (): JSX.Element => {
           <Heading lineHeight={1.1} fontSize={{ base: '2xl', md: '3xl' }}>
             Forgot your password?
           </Heading>
-          <Text
-            fontSize={{ base: 'sm', sm: 'md' }}
-            color={useColorModeValue('gray.800', 'gray.400')}
-          >
+          <Text fontSize={{ base: 'sm', sm: 'md' }} color="gray.800">
             You&apos;ll get an email with a reset link
           </Text>
-          <FormControl id="email">
+          <FormControl
+            id="email"
+            isInvalid={errors.email?.message !== undefined ? true : false}
+          >
             <Input
-              placeholder="your-email@example.com"
-              _placeholder={{ color: 'gray.500' }}
               type="email"
-              name="email"
-              value={email}
-              onChange={handleInputChange}
+              {...register('email', {
+                required: 'This field is required',
+              })}
             />
+            <FormErrorMessage>{errors.email?.message}</FormErrorMessage>
           </FormControl>
           <Stack spacing={6}>
             <Button
@@ -75,6 +75,7 @@ const Page = (): JSX.Element => {
                 bg: 'gray.600',
               }}
               type="submit"
+              isLoading={isSubmitting}
             >
               Request Reset
             </Button>
@@ -82,6 +83,20 @@ const Page = (): JSX.Element => {
         </Stack>
       </Flex>
     </form>
+  );
+};
+
+const Success = () => {
+  return (
+    <Box textAlign="center" py={10} px={6}>
+      <CheckCircleIcon boxSize="50px" color="green.500" />
+      <Heading as="h2" size="xl" mt={6} mb={2}>
+        Please check your mailbox
+      </Heading>
+      <Text color="gray.500">
+        We have sent you an email with a link to reset your password.
+      </Text>
+    </Box>
   );
 };
 
