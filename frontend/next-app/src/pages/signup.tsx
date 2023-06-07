@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 import {
   Box,
@@ -21,7 +22,7 @@ import NextLink from 'next/link';
 
 import { Pages } from 'constants/pages';
 import { useSignup } from 'hooks/useSignup';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { FcGoogle } from 'react-icons/fc';
 import { useGoogleSignin } from 'hooks/useGoogleSignin';
 import { useForm } from 'react-hook-form';
@@ -29,17 +30,23 @@ import { useForm } from 'react-hook-form';
 interface SignupFormData {
   email: string;
   password: string;
+  passwordConfirmation: string;
 }
 
 const Page = (): JSX.Element => {
   const [showPassword, setShowPassword] = useState(false);
+  const [showPasswordConfirmation, setShowPasswordConfirmation] =
+    useState(false);
   const { signinWithGoogle } = useGoogleSignin();
   const { onSubmit, customErrorMessage } = useSignup();
   const {
     handleSubmit,
     register,
     formState: { errors, isSubmitting },
+    watch,
   } = useForm<SignupFormData>();
+  const password = useRef({});
+  password.current = watch('password', '');
 
   return (
     <Flex
@@ -120,6 +127,45 @@ const Page = (): JSX.Element => {
                   </InputRightElement>
                 </InputGroup>
                 <FormErrorMessage>{errors.password?.message}</FormErrorMessage>
+              </FormControl>
+              <FormControl
+                id="password-confirmation"
+                isInvalid={
+                  errors.passwordConfirmation?.message !== undefined
+                    ? true
+                    : false
+                }
+              >
+                <FormLabel>Password confirmation</FormLabel>
+                <InputGroup>
+                  <Input
+                    type={showPasswordConfirmation ? 'text' : 'password'}
+                    {...register('passwordConfirmation', {
+                      required: 'This field is required',
+                      validate: value =>
+                        value === password.current ||
+                        'The passwords do not match',
+                    })}
+                  />
+
+                  <InputRightElement h="full">
+                    <Button
+                      variant="ghost"
+                      onClick={() =>
+                        setShowPasswordConfirmation(!showPasswordConfirmation)
+                      }
+                    >
+                      {showPasswordConfirmation ? (
+                        <ViewIcon />
+                      ) : (
+                        <ViewOffIcon />
+                      )}
+                    </Button>
+                  </InputRightElement>
+                </InputGroup>
+                <FormErrorMessage>
+                  {errors.passwordConfirmation?.message}
+                </FormErrorMessage>
               </FormControl>
               <Stack spacing={10}>
                 <Stack
