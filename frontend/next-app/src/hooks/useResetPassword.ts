@@ -6,6 +6,7 @@ import { resetPassword } from 'services/api-client/resetPassword';
 
 interface FormValues {
   password: string;
+  passwordConfirmation: string;
 }
 
 interface Return {
@@ -18,8 +19,13 @@ export const useResetPassword = (): Return => {
   const token = query.token as string | null;
   const [customErrorMessage, setCustomErrorMessage] = useState('');
   const onSubmit: SubmitHandler<FormValues> = useCallback(
-    async ({ password }: FormValues) => {
+    async ({ password, passwordConfirmation }: FormValues) => {
       setCustomErrorMessage('');
+      if (password !== passwordConfirmation) {
+        setCustomErrorMessage('Passwords do not match');
+
+        return;
+      }
 
       try {
         await resetPassword({ password, token });
