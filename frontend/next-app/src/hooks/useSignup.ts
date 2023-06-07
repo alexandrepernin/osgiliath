@@ -7,6 +7,7 @@ import { signup } from 'services/api-client/signup';
 interface FormValues {
   email: string;
   password: string;
+  passwordConfirmation: string;
 }
 
 interface Return {
@@ -17,19 +18,27 @@ interface Return {
 export const useSignup = (): Return => {
   const [customErrorMessage, setCustomErrorMessage] = useState('');
 
-  const onSubmit = useCallback(async ({ email, password }: FormValues) => {
-    setCustomErrorMessage('');
+  const onSubmit = useCallback(
+    async ({ email, password, passwordConfirmation }: FormValues) => {
+      setCustomErrorMessage('');
+      if (password !== passwordConfirmation) {
+        setCustomErrorMessage('Passwords do not match');
 
-    try {
-      await signup({ email, password });
-      await signIn('email', {
-        callbackUrl: process.env.NEXT_PUBLIC_URL ?? '',
-        email,
-      });
-    } catch (error: unknown) {
-      setCustomErrorMessage("Can't create account");
-    }
-  }, []);
+        return;
+      }
+
+      try {
+        await signup({ email, password });
+        await signIn('email', {
+          callbackUrl: process.env.NEXT_PUBLIC_URL ?? '',
+          email,
+        });
+      } catch (error: unknown) {
+        setCustomErrorMessage("Can't create account");
+      }
+    },
+    [],
+  );
 
   return { onSubmit, customErrorMessage };
 };
