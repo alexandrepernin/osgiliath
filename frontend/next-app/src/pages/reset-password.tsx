@@ -15,21 +15,27 @@ import {
 } from '@chakra-ui/react';
 import { Pages } from 'constants/pages';
 import { useResetPassword } from 'hooks/useResetPassword';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 interface ResetPasswordFormData {
   password: string;
+  passwordConfirmation: string;
 }
 
 const Page = (): JSX.Element => {
   const [showPassword, setShowPassword] = useState(false);
+  const [showPasswordConfirmation, setShowPasswordConfirmation] =
+    useState(false);
   const { onSubmit, customErrorMessage } = useResetPassword();
   const {
     handleSubmit,
     register,
     formState: { errors, isSubmitting, isSubmitSuccessful },
+    watch,
   } = useForm<ResetPasswordFormData>();
+  const password = useRef({});
+  password.current = watch('password', '');
 
   if (isSubmitSuccessful) {
     return (
@@ -82,6 +88,38 @@ const Page = (): JSX.Element => {
               </InputRightElement>
             </InputGroup>
             <FormErrorMessage>{errors.password?.message}</FormErrorMessage>
+          </FormControl>
+          <FormControl
+            id="password-confirmation"
+            isInvalid={
+              errors.passwordConfirmation?.message !== undefined ? true : false
+            }
+          >
+            <FormLabel>Password confirmation</FormLabel>
+            <InputGroup>
+              <Input
+                type={showPasswordConfirmation ? 'text' : 'password'}
+                {...register('passwordConfirmation', {
+                  required: 'This field is required',
+                  validate: value =>
+                    value === password.current || 'The passwords do not match',
+                })}
+              />
+
+              <InputRightElement h="full">
+                <Button
+                  variant="ghost"
+                  onClick={() =>
+                    setShowPasswordConfirmation(!showPasswordConfirmation)
+                  }
+                >
+                  {showPasswordConfirmation ? <ViewIcon /> : <ViewOffIcon />}
+                </Button>
+              </InputRightElement>
+            </InputGroup>
+            <FormErrorMessage>
+              {errors.passwordConfirmation?.message}
+            </FormErrorMessage>
           </FormControl>
           <Stack direction={{ base: 'column' }} align="start">
             <Button
