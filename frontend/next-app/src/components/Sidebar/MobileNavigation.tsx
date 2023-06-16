@@ -1,22 +1,8 @@
-import {
-  Avatar,
-  Box,
-  Flex,
-  FlexProps,
-  HStack,
-  IconButton,
-  Menu,
-  MenuButton,
-  MenuDivider,
-  MenuItem,
-  MenuList,
-  Text,
-  VStack,
-} from '@chakra-ui/react';
+import { Box, Flex, FlexProps, HStack, IconButton } from '@chakra-ui/react';
+import { SignedIn, UserButton } from '@clerk/nextjs';
 import Image from 'next/image';
-import { FiBell, FiChevronDown, FiMenu } from 'react-icons/fi';
+import { FiBell, FiMenu } from 'react-icons/fi';
 
-import { useLogout } from 'hooks/useLogout';
 import { CompanyLogo } from 'icons';
 
 interface MobileProps extends FlexProps {
@@ -24,12 +10,6 @@ interface MobileProps extends FlexProps {
 }
 
 export const MobileNav = ({ onOpen, ...rest }: MobileProps): JSX.Element => {
-  const { logout } = useLogout();
-  const user = {
-    email: 'alex.e.pernin@gmail.com',
-    user_metadata: { picture: '', name: 'Alexandre Pernin' },
-  };
-
   return (
     <Flex
       ml={{ base: 0, md: 60 }}
@@ -52,7 +32,7 @@ export const MobileNav = ({ onOpen, ...rest }: MobileProps): JSX.Element => {
       <Box display={{ base: 'flex', md: 'none' }}>
         <Image priority src={CompanyLogo} alt="Company Logo" />
       </Box>
-      <HStack spacing={{ base: '0', md: '6' }}>
+      <HStack spacing={{ base: '0', md: '2' }}>
         <IconButton
           size="lg"
           variant="ghost"
@@ -60,45 +40,9 @@ export const MobileNav = ({ onOpen, ...rest }: MobileProps): JSX.Element => {
           icon={<FiBell />}
         />
         <Flex alignItems="center">
-          <Menu>
-            <MenuButton
-              py={2}
-              transition="all 0.3s"
-              _focus={{ boxShadow: 'none' }}
-            >
-              <HStack>
-                <Avatar
-                  name={user.email}
-                  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-                  src={user.user_metadata.picture}
-                  backgroundColor="gray.100"
-                  getInitials={(name: string) => name[0] ?? ''}
-                  size="md"
-                />
-                <VStack
-                  display={{ base: 'none', md: 'flex' }}
-                  alignItems="flex-start"
-                  spacing="1px"
-                  ml="2"
-                >
-                  <Text fontSize="sm">{user.user_metadata.name}</Text>
-                  <Text fontSize="xs" color="gray.600">
-                    Admin
-                  </Text>
-                </VStack>
-                <Box display={{ base: 'none', md: 'flex' }}>
-                  <FiChevronDown />
-                </Box>
-              </HStack>
-            </MenuButton>
-            <MenuList bg="white" borderColor="gray.200">
-              <MenuItem>Profile</MenuItem>
-              <MenuItem>Settings</MenuItem>
-              <MenuItem>Billing</MenuItem>
-              <MenuDivider />
-              <MenuItem onClick={() => void logout()}>Sign out</MenuItem>
-            </MenuList>
-          </Menu>
+          <SignedIn>
+            <UserButton afterSignOutUrl="/sign-in" />
+          </SignedIn>
         </Flex>
       </HStack>
     </Flex>

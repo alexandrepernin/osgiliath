@@ -1,19 +1,14 @@
 import { ChakraProvider } from '@chakra-ui/react';
+import { ClerkProvider } from '@clerk/nextjs';
 import { AppProps } from 'next/app';
-import { SessionProvider as AuthProvider } from 'next-auth/react';
 
-const App = ({
-  Component,
-  // @ts-ignore test next js auth
-  pageProps: { session: nextAuthSession, ...pageProps },
-}: AppProps): JSX.Element => {
+const App = ({ Component, ...pageProps }: AppProps): JSX.Element => {
   return (
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    <AuthProvider session={nextAuthSession}>
+    <ClerkProvider {...pageProps}>
       <ChakraProvider>
         <Component {...pageProps} />
       </ChakraProvider>
-    </AuthProvider>
+    </ClerkProvider>
   );
 };
 
