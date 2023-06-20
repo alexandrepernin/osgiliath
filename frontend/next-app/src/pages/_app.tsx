@@ -7,23 +7,7 @@ const App = ({ Component, ...pageProps }: AppProps): JSX.Element => {
     <ClerkProvider
       {...pageProps}
       appearance={{
-        elements: {
-          formButtonPrimary: {
-            backgroundColor: 'black',
-            '&:hover, &:focus, &:active': {
-              backgroundColor: 'gray',
-            },
-          },
-          organizationPreviewMainIdentifier: {
-            fontWeight: 'light',
-          },
-          membersPageInviteButton: {
-            backgroundColor: 'black',
-            '&:hover, &:focus, &:active': {
-              backgroundColor: 'gray',
-            },
-          },
-        },
+        variables: { colorPrimary: '#2D3748' },
       }}
     >
       <ChakraProvider>
