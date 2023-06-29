@@ -3,10 +3,18 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import sendStatus from 'utils/status';
 import { Webhook, WebhookRequiredHeaders } from 'svix';
 import { buffer } from 'micro';
+import { createUser, deleteUser, updateUser } from 'services/database/user';
 
 enum CLERK_EVENTS {
   USER_CREATED = 'user.created',
+  USER_UPDATED = 'user.updated',
+  USER_DELETED = 'user.deleted',
+  ORGANIZATION_CREATED = 'organization.created',
+  ORGANIZATION_UPDATED = 'organization.updated',
+  ORGANIZATION_DELETED = 'organization.deleted',
   ORGANIZATION_INVITATION_CREATED = 'organizationInvitation.created',
+  ORGANIZATION_INVITATION_ACCEPTED = 'organizationInvitation.accepted',
+  ORGANIZATION_INVITATION_REVOKED = 'organizationInvitation.revoked',
 }
 
 export const config = {
@@ -46,10 +54,13 @@ const handler = async (
 
   switch (message.type) {
     case CLERK_EVENTS.USER_CREATED:
-      console.log('WEBHOOK', `${message.data.first_name}`);
+      await createUser(message.data);
       break;
-    case CLERK_EVENTS.ORGANIZATION_INVITATION_CREATED:
-      console.log('WEBHOOK', `${message.data.email_address}`);
+    case CLERK_EVENTS.USER_UPDATED:
+      await updateUser(message.data);
+      break;
+    case CLERK_EVENTS.USER_DELETED:
+      await deleteUser(message.data);
       break;
     default:
       sendStatus(res, 400);
