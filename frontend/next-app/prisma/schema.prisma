@@ -17,7 +17,9 @@ model Home {
 
 model User {
   id            String    @id @default(cuid())
-  name          String?
+  clerk_id      String?   @unique
+  first_name    String?
+  last_name     String?
   email         String?   @unique
   emailVerified DateTime?
   password      String?
