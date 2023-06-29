@@ -1,9 +1,15 @@
+/* eslint-disable complexity */
 import type { WebhookEvent } from '@clerk/clerk-sdk-node';
 import { NextApiRequest, NextApiResponse } from 'next';
 import sendStatus from 'utils/status';
 import { Webhook, WebhookRequiredHeaders } from 'svix';
 import { buffer } from 'micro';
 import { createUser, deleteUser, updateUser } from 'services/database/user';
+import {
+  createOrganization,
+  deleteOrganization,
+  updateOrganization,
+} from 'services/database/organization';
 
 enum CLERK_EVENTS {
   USER_CREATED = 'user.created',
@@ -61,6 +67,15 @@ const handler = async (
       break;
     case CLERK_EVENTS.USER_DELETED:
       await deleteUser(message.data);
+      break;
+    case CLERK_EVENTS.ORGANIZATION_CREATED:
+      await createOrganization(message.data);
+      break;
+    case CLERK_EVENTS.ORGANIZATION_UPDATED:
+      await updateOrganization(message.data);
+      break;
+    case CLERK_EVENTS.ORGANIZATION_DELETED:
+      await deleteOrganization(message.data);
       break;
     default:
       sendStatus(res, 400);
