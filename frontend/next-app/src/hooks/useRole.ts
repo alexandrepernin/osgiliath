@@ -7,18 +7,22 @@ export enum Role {
 }
 
 export const useRole = (): Role | null => {
-  const { membership, isLoaded } = useOrganization();
+  const organization = useOrganization();
+
+  console.log({ organization });
 
   const role = useMemo(() => {
-    if (!isLoaded) {
+    console.log({ organization });
+
+    if (!organization.isLoaded) {
       return null;
     }
-    if (!membership) {
+    if (!organization.membership) {
       return null;
     }
 
-    return membership.role as Role;
-  }, [membership, isLoaded]);
+    return organization.membership.role as Role;
+  }, [organization]);
 
   return role;
 };
