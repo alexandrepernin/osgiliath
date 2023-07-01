@@ -7,7 +7,7 @@ import { FiPlus } from 'react-icons/fi';
 
 const Home = (): JSX.Element => {
   return (
-    <SidebarWithHeader>
+    <SidebarWithHeader menuIndex={0}>
       <Stack direction="row" spacing={4} justify="flex-end" marginBottom="3">
         <Button leftIcon={<FiPlus />} colorScheme="teal" variant="outline">
           Employee
