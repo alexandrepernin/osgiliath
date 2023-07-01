@@ -5,7 +5,6 @@ import { CompanyLogo } from 'icons';
 
 import { LinkItems } from './LinkItems';
 import { NavigationItem } from './NavigationItem';
-import { BrandIdentityColors } from 'constants/colors';
 
 interface SidebarProps extends BoxProps {
   onClose: () => void;
@@ -20,8 +19,8 @@ export const SidebarContent = ({
   return (
     <Box
       transition="3s ease"
-      bg={BrandIdentityColors.menu.background}
-      color={BrandIdentityColors.menu.textColor}
+      bg="brand.menu.background"
+      color="brand.menu.textColor"
       borderRight="1px"
       borderRightColor="gray.200"
       w={{ base: 'full', md: 60 }}

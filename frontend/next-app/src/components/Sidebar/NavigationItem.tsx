@@ -1,5 +1,4 @@
 import { Flex, FlexProps, Icon, Link } from '@chakra-ui/react';
-import { BrandIdentityColors } from 'constants/colors';
 import { ReactNode } from 'react';
 import { IconType } from 'react-icons';
 
@@ -28,14 +27,10 @@ export const NavigationItem = ({
         mx="0"
         role="group"
         cursor="pointer"
-        backgroundColor={
-          selected ? BrandIdentityColors.menu.selected : 'transparent'
-        }
+        backgroundColor={selected ? 'brand.menu.selected' : 'transparent'}
         color={selected ? 'gray.100' : 'inherit'}
         _hover={{
-          bg: selected
-            ? BrandIdentityColors.menu.selected
-            : BrandIdentityColors.menu.hovered,
+          bg: selected ? 'brand.menu.selected' : 'brand.menu.hovered',
           color: 'gray.100',
         }}
         {...rest}
