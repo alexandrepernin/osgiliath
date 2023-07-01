@@ -1,7 +1,7 @@
 import { Box, Flex, FlexProps, HStack, IconButton } from '@chakra-ui/react';
 import { OrganizationSwitcher, SignedIn, UserButton } from '@clerk/nextjs';
 import Image from 'next/image';
-import { FiBell, FiMenu } from 'react-icons/fi';
+import { FiMenu } from 'react-icons/fi';
 
 import { CompanyLogo } from 'icons';
 import { Pages } from 'constants/pages';
@@ -10,7 +10,10 @@ interface MobileProps extends FlexProps {
   onOpen: () => void;
 }
 
-export const MobileNav = ({ onOpen, ...rest }: MobileProps): JSX.Element => {
+export const MobileNavigation = ({
+  onOpen,
+  ...rest
+}: MobileProps): JSX.Element => {
   return (
     <Flex
       ml={{ base: 0, md: 60 }}
@@ -34,12 +37,6 @@ export const MobileNav = ({ onOpen, ...rest }: MobileProps): JSX.Element => {
         <Image priority src={CompanyLogo} alt="Company Logo" />
       </Box>
       <HStack spacing={{ base: '0', md: '2' }}>
-        <IconButton
-          size="lg"
-          variant="ghost"
-          aria-label="open menu"
-          icon={<FiBell />}
-        />
         <Flex alignItems="baseline">
           <Box marginRight="2">
             <OrganizationSwitcher hidePersonal={true} />
