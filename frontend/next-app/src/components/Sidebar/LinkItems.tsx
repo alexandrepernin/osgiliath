@@ -1,20 +1,13 @@
 import { IconType } from 'react-icons';
-import {
-  FiCompass,
-  FiHome,
-  FiSettings,
-  FiStar,
-  FiTrendingUp,
-} from 'react-icons/fi';
+
+import { HiCalendar, HiHome, HiUserGroup } from 'react-icons/hi';
 
 interface LinkItemProps {
   name: string;
   icon: IconType;
 }
 export const LinkItems: Array<LinkItemProps> = [
-  { name: 'Employees', icon: FiCompass },
-  { name: 'Dashboard', icon: FiHome },
-  { name: 'Planning', icon: FiTrendingUp },
-  { name: 'Payroll', icon: FiStar },
-  { name: 'Company', icon: FiSettings },
+  { name: 'Employees', icon: HiUserGroup },
+  { name: 'Dashboard', icon: HiHome },
+  { name: 'Leaves', icon: HiCalendar },
 ];

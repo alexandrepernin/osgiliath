@@ -7,7 +7,7 @@ const App = ({ Component, ...pageProps }: AppProps): JSX.Element => {
     <ClerkProvider
       {...pageProps}
       appearance={{
-        variables: { colorPrimary: '#2D3748' },
+        variables: { colorPrimary: '#052040' },
       }}
     >
       <ChakraProvider>
