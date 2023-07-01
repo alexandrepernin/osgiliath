@@ -5,7 +5,7 @@ import { prisma } from 'services/database/prisma';
 const modelizer = (organization: OrganizationJSON): Partial<Organization> => {
   return {
     name: organization.name,
-    clerk_id: organization.id,
+    clerkId: organization.id,
     image: organization.image_url,
     slug: organization.slug,
   };
@@ -22,11 +22,11 @@ export const updateOrganization = async (
   clerkOrganization: OrganizationJSON,
 ): Promise<void> => {
   const organization = modelizer(clerkOrganization);
-  if (organization.clerk_id === null) {
+  if (organization.clerkId === null) {
     return;
   }
   await prisma.organization.update({
-    where: { clerk_id: organization.clerk_id },
+    where: { clerkId: organization.clerkId },
     data: { ...organization },
   });
 };
@@ -34,5 +34,5 @@ export const updateOrganization = async (
 export const deleteOrganization = async ({
   id,
 }: DeletedObjectJSON): Promise<void> => {
-  await prisma.organization.delete({ where: { clerk_id: id } });
+  await prisma.organization.delete({ where: { clerkId: id } });
 };

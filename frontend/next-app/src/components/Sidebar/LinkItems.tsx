@@ -12,9 +12,9 @@ interface LinkItemProps {
   icon: IconType;
 }
 export const LinkItems: Array<LinkItemProps> = [
+  { name: 'Employees', icon: FiCompass },
   { name: 'Dashboard', icon: FiHome },
   { name: 'Planning', icon: FiTrendingUp },
-  { name: 'Employees', icon: FiCompass },
   { name: 'Payroll', icon: FiStar },
   { name: 'Company', icon: FiSettings },
 ];

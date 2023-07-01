@@ -10,6 +10,11 @@ import {
   deleteOrganization,
   updateOrganization,
 } from 'services/database/organization';
+import {
+  createOrganizationMembership,
+  deleteOrganizationMembership,
+  updateOrganizationMembership,
+} from 'services/database/organizationMembership';
 
 enum CLERK_EVENTS {
   USER_CREATED = 'user.created',
@@ -18,6 +23,9 @@ enum CLERK_EVENTS {
   ORGANIZATION_CREATED = 'organization.created',
   ORGANIZATION_UPDATED = 'organization.updated',
   ORGANIZATION_DELETED = 'organization.deleted',
+  ORGANIZATION_MEMBERSHIP_CREATED = 'organizationMembership.created',
+  ORGANIZATION_MEMBERSHIP_UPDATED = 'organizationMembership.updated',
+  ORGANIZATION_MEMBERSHIP_DELETED = 'organizationMembership.deleted',
   ORGANIZATION_INVITATION_CREATED = 'organizationInvitation.created',
   ORGANIZATION_INVITATION_ACCEPTED = 'organizationInvitation.accepted',
   ORGANIZATION_INVITATION_REVOKED = 'organizationInvitation.revoked',
@@ -68,6 +76,7 @@ const handler = async (
     case CLERK_EVENTS.USER_DELETED:
       await deleteUser(message.data);
       break;
+
     case CLERK_EVENTS.ORGANIZATION_CREATED:
       await createOrganization(message.data);
       break;
@@ -77,6 +86,17 @@ const handler = async (
     case CLERK_EVENTS.ORGANIZATION_DELETED:
       await deleteOrganization(message.data);
       break;
+
+    case CLERK_EVENTS.ORGANIZATION_MEMBERSHIP_CREATED:
+      await createOrganizationMembership(message.data);
+      break;
+    case CLERK_EVENTS.ORGANIZATION_MEMBERSHIP_UPDATED:
+      await updateOrganizationMembership(message.data);
+      break;
+    case CLERK_EVENTS.ORGANIZATION_MEMBERSHIP_DELETED:
+      await deleteOrganizationMembership(message.data);
+      break;
+
     default:
       sendStatus(res, 400);
   }
