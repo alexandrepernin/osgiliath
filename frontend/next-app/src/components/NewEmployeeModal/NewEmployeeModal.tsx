@@ -3,11 +3,10 @@ import {
   ModalBody,
   ModalCloseButton,
   ModalContent,
-  ModalFooter,
   ModalHeader,
   ModalOverlay,
 } from '@chakra-ui/react';
-import { Button } from 'components/Button';
+import { NewEmployeeForm } from './NewEmployeeForm';
 
 interface Props {
   isOpen: boolean;
@@ -21,10 +20,9 @@ export const NewEmployeeModal = ({ isOpen, onClose }: Props): JSX.Element => {
       <ModalContent>
         <ModalHeader>Add employee</ModalHeader>
         <ModalCloseButton />
-        <ModalBody />
-        <ModalFooter>
-          <Button onClick={onClose} text="Confirm" />
-        </ModalFooter>
+        <ModalBody pb="6">
+          <NewEmployeeForm />
+        </ModalBody>
       </ModalContent>
     </Modal>
   );

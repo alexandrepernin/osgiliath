@@ -6,17 +6,19 @@ interface NavigationItemProps extends FlexProps {
   selected: boolean;
   icon?: IconType;
   children: ReactNode;
+  path: string;
 }
 
 export const NavigationItem = ({
   selected,
   icon,
   children,
+  path,
   ...rest
 }: NavigationItemProps): JSX.Element => {
   return (
     <Link
-      href="#"
+      href={path}
       style={{ textDecoration: 'none' }}
       _focus={{ boxShadow: 'none' }}
     >

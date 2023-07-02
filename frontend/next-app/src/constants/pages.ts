@@ -4,4 +4,6 @@ export enum Pages {
   HOME = '/',
 }
 
-export enum ApiRoutes {}
+export enum ApiRoutes {
+  CREATE_EMPLOYEE = '/api/create-employee',
+}
