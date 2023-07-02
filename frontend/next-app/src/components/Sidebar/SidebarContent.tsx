@@ -42,6 +42,7 @@ export const SidebarContent = ({
         <NavigationItem
           key={link.name}
           icon={link.icon}
+          path={link.path}
           selected={index === menuIndex}
         >
           {link.name}
