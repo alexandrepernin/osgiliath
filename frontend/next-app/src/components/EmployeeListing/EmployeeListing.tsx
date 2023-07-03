@@ -7,13 +7,13 @@ import {
   Thead,
   Tr,
 } from '@chakra-ui/react';
-import { User } from '@prisma/client';
+import { Employee } from '@prisma/client';
 
 interface Props {
-  users: User[];
+  employees: Employee[];
 }
 
-export const EmployeeListing = ({ users }: Props): JSX.Element => {
+export const EmployeeListing = ({ employees }: Props): JSX.Element => {
   return (
     <TableContainer>
       <Table variant="simple" backgroundColor="white" borderRadius="lg">
@@ -25,9 +25,17 @@ export const EmployeeListing = ({ users }: Props): JSX.Element => {
           </Tr>
         </Thead>
         <Tbody>
-          {users.map(user => (
-            <Tr key={user.email}>
-              <Td>{`${user.firstName ?? ''} ${user.lastName ?? ''}`}</Td>
+          {employees.map(employee => (
+            <Tr key={employee.id}>
+              <Td>{`${employee.firstName ?? ''} ${
+                employee.lastName ?? ''
+              }`}</Td>
+              <Td>{employee.jobTitle}</Td>
+              <Td>
+                {employee.startDate
+                  ? new Date(employee.startDate).toDateString()
+                  : ''}
+              </Td>
             </Tr>
           ))}
         </Tbody>
