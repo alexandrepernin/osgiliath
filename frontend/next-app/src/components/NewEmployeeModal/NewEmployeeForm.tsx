@@ -10,6 +10,8 @@ import {
 import { useForm } from 'react-hook-form';
 import { useNewEmployeeForm } from './useNewEmployeeForm';
 import { Button } from 'components/Button';
+import { useState } from 'react';
+import { DateInput } from 'components/DateInput';
 
 interface NewEmployeeFormData {
   email: string;
@@ -26,6 +28,7 @@ export const NewEmployeeForm = (): JSX.Element => {
     formState: { errors, isSubmitting },
   } = useForm<NewEmployeeFormData>();
   const { onSubmit } = useNewEmployeeForm();
+  const [value, setValue] = useState<Date | null>(null);
 
   return (
     // eslint-disable-next-line @typescript-eslint/no-misused-promises
@@ -80,24 +83,14 @@ export const NewEmployeeForm = (): JSX.Element => {
               {errors.email?.message}
             </FormErrorMessage>
           </FormControl>
-          <HStack>
-            <Box>
-              {/* To do: change into date picker */}
+          <HStack width="100%">
+            <Box width="50%">
               <FormControl id="startDate">
                 <FormLabel fontSize="sm">Start date</FormLabel>
-                <Input
-                  fontSize="sm"
-                  type="text"
-                  {...register('startDate', {
-                    required: 'This field is required',
-                  })}
-                />
-                <FormErrorMessage fontSize="xs">
-                  {errors.startDate?.message}
-                </FormErrorMessage>
+                <DateInput value={value} setValue={setValue} />
               </FormControl>
             </Box>
-            <Box>
+            <Box width="50%">
               <FormControl id="jobTitle">
                 <FormLabel fontSize="sm">Job title</FormLabel>
                 <Input
