@@ -1,7 +1,7 @@
+/* eslint-disable complexity */
 import {
   Box,
   FormControl,
-  FormErrorMessage,
   FormLabel,
   HStack,
   Input,
@@ -18,7 +18,7 @@ interface NewEmployeeFormData {
   firstName: string;
   lastName: string;
   jobTitle: string;
-  startDate: string;
+  startDate: Date;
 }
 
 export const NewEmployeeForm = (): JSX.Element => {
@@ -27,43 +27,63 @@ export const NewEmployeeForm = (): JSX.Element => {
     register,
     formState: { errors, isSubmitting },
   } = useForm<NewEmployeeFormData>();
-  const { onSubmit } = useNewEmployeeForm();
   const [value, setValue] = useState<Date | null>(null);
+  const { onSubmit } = useNewEmployeeForm(value);
 
   return (
     // eslint-disable-next-line @typescript-eslint/no-misused-promises
     <form onSubmit={handleSubmit(onSubmit)}>
       <Stack spacing={8} mx="auto" maxW="lg">
         <Stack spacing={4}>
-          <HStack>
-            <Box>
-              <FormControl id="firstName">
+          <HStack width="100%">
+            <Box width="50%">
+              <FormControl
+                id="firstName"
+                isInvalid={
+                  errors.firstName?.message !== undefined ? true : false
+                }
+              >
                 <FormLabel fontSize="sm">First Name</FormLabel>
                 <Input
                   fontSize="sm"
                   type="text"
+                  _focusVisible={
+                    errors.firstName?.message === undefined
+                      ? {
+                          border: '1px solid #4299E1;',
+                          outline: 'none',
+                        }
+                      : undefined
+                  }
                   {...register('firstName', {
                     required: 'This field is required',
                   })}
                 />
-                <FormErrorMessage fontSize="xs">
-                  {errors.firstName?.message}
-                </FormErrorMessage>
               </FormControl>
             </Box>
-            <Box>
-              <FormControl id="lastName">
+            <Box width="50%">
+              <FormControl
+                id="lastName"
+                isInvalid={
+                  errors.lastName?.message !== undefined ? true : false
+                }
+              >
                 <FormLabel fontSize="sm">Last Name</FormLabel>
                 <Input
                   fontSize="sm"
                   type="text"
+                  _focusVisible={
+                    errors.lastName?.message === undefined
+                      ? {
+                          border: '1px solid #4299E1;',
+                          outline: 'none',
+                        }
+                      : undefined
+                  }
                   {...register('lastName', {
                     required: 'This field is required',
                   })}
                 />
-                <FormErrorMessage fontSize="xs">
-                  {errors.lastName?.message}
-                </FormErrorMessage>
               </FormControl>
             </Box>
           </HStack>
@@ -73,36 +93,53 @@ export const NewEmployeeForm = (): JSX.Element => {
           >
             <FormLabel fontSize="sm">Email address</FormLabel>
             <Input
+              variant="outline"
               fontSize="sm"
+              _focusVisible={
+                errors.email?.message === undefined
+                  ? {
+                      border: '1px solid #4299E1;',
+                      outline: 'none',
+                    }
+                  : undefined
+              }
               type="email"
               {...register('email', {
                 required: 'This field is required',
               })}
             />
-            <FormErrorMessage fontSize="xs">
-              {errors.email?.message}
-            </FormErrorMessage>
           </FormControl>
           <HStack width="100%">
             <Box width="50%">
+              {/* To do : handle error message */}
               <FormControl id="startDate">
                 <FormLabel fontSize="sm">Start date</FormLabel>
                 <DateInput value={value} setValue={setValue} />
               </FormControl>
             </Box>
             <Box width="50%">
-              <FormControl id="jobTitle">
+              <FormControl
+                id="jobTitle"
+                isInvalid={
+                  errors.jobTitle?.message !== undefined ? true : false
+                }
+              >
                 <FormLabel fontSize="sm">Job title</FormLabel>
                 <Input
                   fontSize="sm"
                   type="text"
+                  _focusVisible={
+                    errors.jobTitle?.message === undefined
+                      ? {
+                          border: '1px solid #4299E1;',
+                          outline: 'none',
+                        }
+                      : undefined
+                  }
                   {...register('jobTitle', {
                     required: 'This field is required',
                   })}
                 />
-                <FormErrorMessage fontSize="xs">
-                  {errors.jobTitle?.message}
-                </FormErrorMessage>
               </FormControl>
             </Box>
           </HStack>

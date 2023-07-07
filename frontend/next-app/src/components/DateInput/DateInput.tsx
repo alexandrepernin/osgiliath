@@ -16,11 +16,13 @@ export const DateInput = ({ value, setValue }: Props): JSX.Element => (
     }}
   >
     <MantineDatePickerInput
+      clearable
+      placeholder="Pick a date"
       value={value}
       onChange={setValue}
       miw="50%"
       allowDeselect={true}
-      rightSection={<FiCalendar />}
+      icon={<FiCalendar />}
       size="sm"
       styles={{ input: { minHeight: '2.50rem' } }}
     />
