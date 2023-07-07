@@ -4,15 +4,15 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import sendStatus from 'utils/status';
 import { Webhook, WebhookRequiredHeaders } from 'svix';
 import { buffer } from 'micro';
-import { createUser, deleteUser, updateUser } from 'services/database/user';
+import { deleteUser, syncClerkUser, updateUser } from 'services/database/user';
 import {
   createOrganization,
   deleteOrganization,
   updateOrganization,
 } from 'services/database/organization';
 import {
-  createOrganizationMembership,
   deleteOrganizationMembership,
+  syncOrganizationMembership,
   updateOrganizationMembership,
 } from 'services/database/organizationMembership';
 
@@ -68,7 +68,7 @@ const handler = async (
 
   switch (message.type) {
     case CLERK_EVENTS.USER_CREATED:
-      await createUser(message.data);
+      await syncClerkUser(message.data);
       break;
     case CLERK_EVENTS.USER_UPDATED:
       await updateUser(message.data);
@@ -88,7 +88,7 @@ const handler = async (
       break;
 
     case CLERK_EVENTS.ORGANIZATION_MEMBERSHIP_CREATED:
-      await createOrganizationMembership(message.data);
+      await syncOrganizationMembership(message.data);
       break;
     case CLERK_EVENTS.ORGANIZATION_MEMBERSHIP_UPDATED:
       await updateOrganizationMembership(message.data);

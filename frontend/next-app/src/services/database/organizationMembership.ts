@@ -1,13 +1,8 @@
 import { OrganizationMembershipJSON } from '@clerk/clerk-sdk-node';
-import { UserMembership } from '@prisma/client';
 import { prisma } from 'services/database/prisma';
+import { getOrganizationMembers } from './organization';
 
-const modelizer = (
-  membership: OrganizationMembershipJSON,
-): Pick<UserMembership, 'role' | 'clerkId'> & {
-  organizationClerkId: string;
-  userClerkId: string;
-} => {
+const modelizer = (membership: OrganizationMembershipJSON) => {
   return {
     role: membership.role,
     clerkId: membership.id,
@@ -16,10 +11,35 @@ const modelizer = (
   };
 };
 
-export const createOrganizationMembership = async (
-  clerkOrganization: OrganizationMembershipJSON,
+export const syncOrganizationMembership = async (
+  clerkOrganizationMembership: OrganizationMembershipJSON,
 ): Promise<void> => {
-  const membership = modelizer(clerkOrganization);
+  const membership = modelizer(clerkOrganizationMembership);
+  const organization = await getOrganizationMembers(
+    membership.organizationClerkId,
+  );
+  if (organization === null) {
+    throw new Error('Organization not found');
+  }
+  const retrievedMember = organization.users.find(
+    member => member.user.clerkId === membership.userClerkId,
+  );
+  if (retrievedMember) {
+    await prisma.userMembership.update({
+      where: {
+        userId_organizationId: {
+          userId: retrievedMember.user.id,
+          organizationId: organization.id,
+        },
+      },
+      data: {
+        clerkId: membership.clerkId,
+      },
+    });
+
+    return;
+  }
+
   await prisma.userMembership.create({
     data: {
       clerkId: membership.clerkId,
@@ -38,10 +58,6 @@ export const updateOrganizationMembership = async (
   clerkOrganization: OrganizationMembershipJSON,
 ): Promise<void> => {
   const membership = modelizer(clerkOrganization);
-
-  if (membership.clerkId === null) {
-    throw new Error('No clerkId found');
-  }
 
   await prisma.userMembership.update({
     where: {
@@ -64,10 +80,6 @@ export const deleteOrganizationMembership = async (
   clerkOrganization: OrganizationMembershipJSON,
 ): Promise<void> => {
   const membership = modelizer(clerkOrganization);
-
-  if (membership.clerkId === null) {
-    throw new Error('No clerkId found');
-  }
 
   await prisma.userMembership.delete({
     where: {
