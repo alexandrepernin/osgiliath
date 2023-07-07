@@ -39,8 +39,7 @@ const handler = async (
     return;
   }
 
-  // to do: use start date as well
-  const { email, firstName, lastName, jobTitle } = req.body;
+  const { email, firstName, lastName, jobTitle, startDate } = req.body;
 
   try {
     const createdEmployeee = await createEmployee(
@@ -49,6 +48,7 @@ const handler = async (
         firstName,
         lastName,
         jobTitle,
+        startDate,
       },
       callerOrganization.organization.id,
       // to do: add possibility to choose role
@@ -74,7 +74,7 @@ export type CreateEmployeeAPIPostData = {
   firstName: string;
   lastName: string;
   jobTitle: string;
-  startDate?: string;
+  startDate: Date;
 };
 
 const isCreateEmployeeAPIPostData = (

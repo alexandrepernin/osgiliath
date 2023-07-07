@@ -6,7 +6,7 @@ export const createEmployee = async (
   orgId: number,
   role: Role,
 ): Promise<User> => {
-  const { email, firstName, lastName, jobTitle } = employee;
+  const { email, firstName, lastName, jobTitle, startDate } = employee;
   const createdEmployee = await prisma.user.create({
     data: {
       email: email?.toLowerCase(),
@@ -25,6 +25,7 @@ export const createEmployee = async (
           firstName,
           lastName,
           jobTitle,
+          startDate,
         },
       },
     },

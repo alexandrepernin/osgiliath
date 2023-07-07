@@ -15,7 +15,7 @@ interface Return {
   customErrorMessage?: string;
 }
 
-export const useNewEmployeeForm = (): Return => {
+export const useNewEmployeeForm = (startDate: Date): Return => {
   const router = useRouter();
   const [customErrorMessage, setCustomErrorMessage] = useState('');
 
@@ -29,13 +29,14 @@ export const useNewEmployeeForm = (): Return => {
           firstName,
           lastName,
           jobTitle,
+          startDate,
         });
         await router.push(`/employee/${response.id}`);
       } catch (error: unknown) {
         setCustomErrorMessage("Can't create employee");
       }
     },
-    [router],
+    [router, startDate],
   );
 
   return { onSubmit, customErrorMessage };
