@@ -1,8 +1,8 @@
 import { DeletedObjectJSON, UserJSON } from '@clerk/clerk-sdk-node';
-import { Organization, User, UserMembership } from '@prisma/client';
+import { Organization, UserMembership } from '@prisma/client';
 import { prisma } from 'services/database/prisma';
 
-const modelizer = (user: UserJSON): Partial<User> => {
+const modelizer = (user: UserJSON) => {
   const { primary_email_address_id } = user;
   const emailObject = user.email_addresses.find(
     emailAddress => emailAddress.id === primary_email_address_id,
@@ -36,16 +36,24 @@ export const getUserOrganizationByClerkId = async (
   );
 };
 
-export const createUser = async (clerkUser: UserJSON): Promise<void> => {
+export const syncClerkUser = async (clerkUser: UserJSON): Promise<void> => {
   const user = modelizer(clerkUser);
-  await prisma.user.create({ data: user });
+  const retrievedUser = await prisma.user.findUnique({
+    where: { email: user.email },
+  });
+  if (retrievedUser === null) {
+    await prisma.user.create({ data: user });
+
+    return;
+  }
+  await prisma.user.update({
+    where: { email: user.email },
+    data: { clerkId: user.clerkId, image: user.image },
+  });
 };
 
 export const updateUser = async (clerkUser: UserJSON): Promise<void> => {
   const user = modelizer(clerkUser);
-  if (user.clerkId === null) {
-    return;
-  }
   await prisma.user.update({
     where: { clerkId: user.clerkId },
     data: { ...user },

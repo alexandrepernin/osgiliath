@@ -1,5 +1,5 @@
 import { DeletedObjectJSON, OrganizationJSON } from '@clerk/clerk-sdk-node';
-import { Organization, User } from '@prisma/client';
+import { Organization, User, UserMembership } from '@prisma/client';
 import { prisma } from 'services/database/prisma';
 
 const modelizer = (organization: OrganizationJSON): Partial<Organization> => {
@@ -13,13 +13,15 @@ const modelizer = (organization: OrganizationJSON): Partial<Organization> => {
 
 export const getOrganizationMembers = async (
   clerkOrganizationId: string,
-): Promise<User[]> => {
+): Promise<
+  (Organization & { users: (UserMembership & { user: User })[] }) | null
+> => {
   const organizationAndMembers = await prisma.organization.findUnique({
     where: { clerkId: clerkOrganizationId },
     include: { users: { include: { user: true } } },
   });
 
-  return organizationAndMembers?.users.map(({ user }) => user) ?? [];
+  return organizationAndMembers;
 };
 
 export const createOrganization = async (
