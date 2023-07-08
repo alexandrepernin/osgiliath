@@ -1,6 +1,6 @@
 import { DeletedObjectJSON, OrganizationJSON } from '@clerk/clerk-sdk-node';
 import { Organization, User, UserMembership } from '@prisma/client';
-import { prisma } from 'services/database/prisma';
+import { prisma } from './prisma';
 
 const modelizer = (organization: OrganizationJSON): Partial<Organization> => {
   return {

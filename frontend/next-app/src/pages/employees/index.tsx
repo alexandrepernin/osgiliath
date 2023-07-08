@@ -8,7 +8,7 @@ import { EmployeeListing } from 'components/EmployeeListing';
 import { NewEmployeeModal } from 'components/NewEmployeeModal';
 import { SidebarWithHeader } from 'components/Sidebar';
 import { BsFillPlusCircleFill } from 'react-icons/bs';
-import { getOrganizationEmployees } from 'services/database/employee';
+import { getOrganizationEmployees } from 'backend/services/employee';
 
 interface Props {
   employees: (User & {

@@ -1,6 +1,6 @@
 import { DeletedObjectJSON, UserJSON } from '@clerk/clerk-sdk-node';
 import { Organization, UserMembership } from '@prisma/client';
-import { prisma } from 'services/database/prisma';
+import { prisma } from './prisma';
 
 const modelizer = (user: UserJSON) => {
   const { primary_email_address_id } = user;
