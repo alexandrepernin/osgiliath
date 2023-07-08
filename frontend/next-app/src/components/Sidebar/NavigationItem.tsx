@@ -1,4 +1,5 @@
 import { Flex, FlexProps, Icon, Link } from '@chakra-ui/react';
+import NextLink from 'next/link';
 import { ReactNode } from 'react';
 import { IconType } from 'react-icons';
 
@@ -19,6 +20,7 @@ export const NavigationItem = ({
   return (
     <Link
       href={path}
+      as={NextLink}
       style={{ textDecoration: 'none' }}
       _focus={{ boxShadow: 'none' }}
     >
