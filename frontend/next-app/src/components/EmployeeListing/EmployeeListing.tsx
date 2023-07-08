@@ -1,5 +1,6 @@
 import {
   Avatar,
+  Box,
   Flex,
   LinkBox,
   LinkOverlay,
@@ -55,9 +56,9 @@ export const EmployeeListing = ({ employees }: Props): JSX.Element => {
                       src={image ?? undefined}
                       marginRight="2"
                     />
-                    <span>{`${employee.firstName ?? ''} ${
+                    <Box>{`${employee.firstName ?? ''} ${
                       employee.lastName ?? ''
-                    }`}</span>
+                    }`}</Box>
                   </Flex>
                 </LinkOverlay>
               </Td>

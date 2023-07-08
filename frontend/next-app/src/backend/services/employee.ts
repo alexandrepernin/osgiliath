@@ -1,5 +1,5 @@
 import { Employee, Role, User } from '@prisma/client';
-import { prisma } from 'services/database/prisma';
+import { prisma } from './prisma';
 
 export const createEmployee = async (
   employee: Pick<User, 'email'> & Partial<Employee>,

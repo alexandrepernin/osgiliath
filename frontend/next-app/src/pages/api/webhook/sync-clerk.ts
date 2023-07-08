@@ -4,17 +4,17 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import sendStatus from 'utils/status';
 import { Webhook, WebhookRequiredHeaders } from 'svix';
 import { buffer } from 'micro';
-import { deleteUser, syncClerkUser, updateUser } from 'services/database/user';
+import { deleteUser, syncClerkUser, updateUser } from 'backend/services/user';
 import {
   createOrganization,
   deleteOrganization,
   updateOrganization,
-} from 'services/database/organization';
+} from 'backend/services/organization';
 import {
   deleteOrganizationMembership,
   syncOrganizationMembership,
   updateOrganizationMembership,
-} from 'services/database/organizationMembership';
+} from 'backend/services/organizationMembership';
 
 enum CLERK_EVENTS {
   USER_CREATED = 'user.created',
