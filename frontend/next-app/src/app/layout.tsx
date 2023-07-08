@@ -16,7 +16,11 @@ const RootLayout = ({
   children: React.ReactNode;
 }): JSX.Element => {
   return (
-    <ClerkProvider>
+    <ClerkProvider
+      appearance={{
+        variables: { colorPrimary: '#052040' },
+      }}
+    >
       <html lang="en">
         <head>
           <link

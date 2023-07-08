@@ -1,5 +1,8 @@
+'use client';
+
+import { Flex } from '@chakra-ui/react';
+import { useColorModeValue } from '@chakra-ui/system';
 import { SignUp } from '@clerk/nextjs';
-import { Flex, useColorModeValue } from '@chakra-ui/react';
 
 const Page = (): JSX.Element => {
   return (
