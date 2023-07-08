@@ -1,6 +1,6 @@
 import { GetServerSideProps } from 'next';
 
-import { Stack, useDisclosure } from '@chakra-ui/react';
+import { Box, Stack, useDisclosure } from '@chakra-ui/react';
 import { getAuth } from '@clerk/nextjs/server';
 import { Button } from 'components/Button';
 import { EmployeeListing } from 'components/EmployeeListing';
@@ -31,15 +31,17 @@ const Page = ({ employees }: Props): JSX.Element => {
 
   return (
     <SidebarWithHeader menuIndex={1}>
-      <Stack direction="row" spacing={4} justify="flex-end" marginBottom="3">
-        <Button
-          onClick={onOpen}
-          leftIcon={<BsFillPlusCircleFill />}
-          text="Employee"
-        />
-      </Stack>
-      <EmployeeListing employees={employees} />
-      <NewEmployeeModal isOpen={isOpen} onClose={onClose} />
+      <Box padding="4">
+        <Stack direction="row" spacing={4} justify="flex-end" marginBottom="3">
+          <Button
+            onClick={onOpen}
+            leftIcon={<BsFillPlusCircleFill />}
+            text="Employee"
+          />
+        </Stack>
+        <EmployeeListing employees={employees} />
+        <NewEmployeeModal isOpen={isOpen} onClose={onClose} />
+      </Box>
     </SidebarWithHeader>
   );
 };
