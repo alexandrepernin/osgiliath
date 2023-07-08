@@ -2,18 +2,16 @@ import { GetServerSideProps } from 'next';
 
 import { Stack, useDisclosure } from '@chakra-ui/react';
 import { getAuth } from '@clerk/nextjs/server';
-import { Employee, User } from '@prisma/client';
 import { Button } from 'components/Button';
 import { EmployeeListing } from 'components/EmployeeListing';
 import { NewEmployeeModal } from 'components/NewEmployeeModal';
 import { SidebarWithHeader } from 'components/Sidebar';
 import { BsFillPlusCircleFill } from 'react-icons/bs';
 import { getOrganizationEmployees } from 'backend/services/employee';
+import { Employee } from 'types/Employee';
 
 interface Props {
-  employees: (User & {
-    employee: Employee;
-  })[];
+  employees: Employee[];
 }
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
@@ -24,7 +22,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   const employees = await getOrganizationEmployees(orgId);
 
   return {
-    props: { employees: JSON.parse(JSON.stringify(employees)) as Employee[] },
+    props: { employees },
   };
 };
 
