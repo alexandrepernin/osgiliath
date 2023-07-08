@@ -1,5 +1,5 @@
 import { OrganizationMembershipJSON } from '@clerk/clerk-sdk-node';
-import { prisma } from 'services/database/prisma';
+import { prisma } from './prisma';
 import { getOrganizationMembers } from './organization';
 
 const modelizer = (membership: OrganizationMembershipJSON) => {

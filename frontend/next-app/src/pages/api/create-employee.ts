@@ -1,8 +1,8 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getAuth } from '@clerk/nextjs/server';
-import { createEmployee } from 'services/database/employee';
+import { createEmployee } from 'backend/services/employee';
 import sendStatus from 'utils/status';
-import { getUserOrganizationByClerkId } from 'services/database/user';
+import { getUserOrganizationByClerkId } from 'backend/services/user';
 import { Role } from '@prisma/client';
 
 const handler = async (
