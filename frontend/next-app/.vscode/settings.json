@@ -1,4 +1,6 @@
 {
   "stylelint.validate": ["typescript", "typescriptreact"],
-  "stylelint.customSyntax": "postcss-styled-syntax"
+  "stylelint.customSyntax": "postcss-styled-syntax",
+  "typescript.tsdk": "../../node_modules/.pnpm/typescript@5.0.4/node_modules/typescript/lib",
+  "typescript.enablePromptUseWorkspaceTsdk": true
 }
