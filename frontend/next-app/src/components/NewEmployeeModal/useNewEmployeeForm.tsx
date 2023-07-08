@@ -42,7 +42,7 @@ export const useNewEmployeeForm = (startDate: Date | null): Return => {
           emailAddress: email,
           role: 'basic_member',
         });
-        await router.push(`/employee/${response.id}`);
+        await router.push(`/employees/${response.id}`);
       } catch (error: unknown) {
         setCustomErrorMessage("Can't create employee");
       }

@@ -1,6 +1,6 @@
 import { OrganizationMembershipJSON } from '@clerk/clerk-sdk-node';
-import { prisma } from './prisma';
-import { getOrganizationMembers } from './organization';
+import { prisma } from '../prisma';
+import { getOrganizationMembers } from '../organization';
 
 const modelizer = (membership: OrganizationMembershipJSON) => {
   return {
@@ -11,7 +11,7 @@ const modelizer = (membership: OrganizationMembershipJSON) => {
   };
 };
 
-export const syncOrganizationMembership = async (
+export const syncMembershipCreation = async (
   clerkOrganizationMembership: OrganizationMembershipJSON,
 ): Promise<void> => {
   const membership = modelizer(clerkOrganizationMembership);
@@ -54,7 +54,7 @@ export const syncOrganizationMembership = async (
   });
 };
 
-export const updateOrganizationMembership = async (
+export const syncMembershipUpdate = async (
   clerkOrganization: OrganizationMembershipJSON,
 ): Promise<void> => {
   const membership = modelizer(clerkOrganization);
@@ -76,7 +76,7 @@ export const updateOrganizationMembership = async (
   });
 };
 
-export const deleteOrganizationMembership = async (
+export const syncMembershipDeletion = async (
   clerkOrganization: OrganizationMembershipJSON,
 ): Promise<void> => {
   const membership = modelizer(clerkOrganization);
