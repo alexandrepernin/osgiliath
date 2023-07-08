@@ -1,7 +1,9 @@
 export enum Pages {
   SIGNIN = '/sign-in',
   SIGNUP = '/sign-up',
-  HOME = '/',
+  EMPLOYEES = '/employees',
+  LEAVES = '/leaves',
+  DASHBOARD = '/',
 }
 
 export enum ApiRoutes {

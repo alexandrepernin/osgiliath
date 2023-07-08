@@ -11,6 +11,10 @@ const brand = {
     color: '#0f6fde',
     hovered: '#2f7de2',
   },
+  avatar: {
+    background: '#485B70',
+    textColor: 'white',
+  },
 };
 
 export const theme = extendTheme({

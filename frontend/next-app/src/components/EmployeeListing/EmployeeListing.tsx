@@ -1,4 +1,8 @@
 import {
+  Avatar,
+  Flex,
+  LinkBox,
+  LinkOverlay,
   Table,
   TableContainer,
   Tbody,
@@ -7,10 +11,13 @@ import {
   Thead,
   Tr,
 } from '@chakra-ui/react';
-import { Employee } from '@prisma/client';
+import { Employee, User } from '@prisma/client';
+import NextLink from 'next/link';
 
 interface Props {
-  employees: Employee[];
+  employees: (User & {
+    employee: Employee;
+  })[];
 }
 
 export const EmployeeListing = ({ employees }: Props): JSX.Element => {
@@ -25,18 +32,42 @@ export const EmployeeListing = ({ employees }: Props): JSX.Element => {
           </Tr>
         </Thead>
         <Tbody>
-          {employees.map(employee => (
-            <Tr key={employee.id}>
-              <Td>{`${employee.firstName ?? ''} ${
-                employee.lastName ?? ''
-              }`}</Td>
+          {employees.map(({ employee, image }) => (
+            <LinkBox
+              key={employee.id}
+              as={Tr}
+              _hover={{ backgroundColor: 'gray.100', cursor: 'pointer' }}
+            >
+              <Td>
+                <LinkOverlay
+                  as={NextLink}
+                  key={employee.id}
+                  href={`/employees/${employee.id}`}
+                >
+                  <Flex align="baseline">
+                    <Avatar
+                      size="sm"
+                      backgroundColor="brand.avatar.background"
+                      color="brand.avatar.textColor"
+                      name={`${employee.firstName ?? ''} ${
+                        employee.lastName ?? ''
+                      }`}
+                      src={image ?? undefined}
+                      marginRight="2"
+                    />
+                    <span>{`${employee.firstName ?? ''} ${
+                      employee.lastName ?? ''
+                    }`}</span>
+                  </Flex>
+                </LinkOverlay>
+              </Td>
               <Td>{employee.jobTitle}</Td>
               <Td>
                 {employee.startDate
-                  ? new Date(employee.startDate).toDateString()
+                  ? new Date(employee.startDate).toLocaleDateString()
                   : ''}
               </Td>
-            </Tr>
+            </LinkBox>
           ))}
         </Tbody>
       </Table>

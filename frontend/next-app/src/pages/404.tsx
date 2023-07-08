@@ -22,7 +22,7 @@ const NotFound = (): JSX.Element => (
         _hover={{
           bg: 'gray.600',
         }}
-        href={Pages.HOME}
+        href={Pages.DASHBOARD}
       >
         Go to Home
       </Button>

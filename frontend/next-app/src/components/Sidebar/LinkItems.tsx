@@ -9,7 +9,7 @@ interface LinkItemProps {
   path: Pages | '#';
 }
 export const LinkItems: Array<LinkItemProps> = [
-  { name: 'Employees', icon: HiUserGroup, path: Pages.HOME },
-  { name: 'Dashboard', icon: HiHome, path: '#' },
-  { name: 'Leaves', icon: HiCalendar, path: '#' },
+  { name: 'Dashboard', icon: HiHome, path: Pages.DASHBOARD },
+  { name: 'Employees', icon: HiUserGroup, path: Pages.EMPLOYEES },
+  { name: 'Leaves', icon: HiCalendar, path: Pages.LEAVES },
 ];
