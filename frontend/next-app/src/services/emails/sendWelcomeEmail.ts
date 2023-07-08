@@ -2,12 +2,11 @@ import { readFileSync } from 'fs';
 import Handlebars from 'handlebars';
 import path from 'path';
 import { transporter } from './constants';
-import { DefaultUser } from 'next-auth';
 
 const emailsDir = path.resolve(process.cwd(), 'src/emails');
 
 interface CreateUserEvent {
-  user: DefaultUser;
+  user: { email: string | null };
 }
 
 export const sendWelcomeEmail = async ({
