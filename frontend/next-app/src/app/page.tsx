@@ -1,3 +1,5 @@
+'use client';
+
 import { SidebarWithHeader } from 'components/Sidebar';
 
 const Page = (): JSX.Element => {
