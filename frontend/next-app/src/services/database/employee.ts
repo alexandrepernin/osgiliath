@@ -36,7 +36,7 @@ export const createEmployee = async (
 
 export const getOrganizationEmployees = async (
   clerkOrganizationId: string,
-): Promise<Employee[]> => {
+): Promise<(User & { employee: Employee })[]> => {
   const organizationAndMembers = await prisma.organization.findUnique({
     where: { clerkId: clerkOrganizationId },
     include: { users: { include: { user: { include: { employee: true } } } } },
@@ -47,7 +47,7 @@ export const getOrganizationEmployees = async (
     return [];
   }
 
-  return users
-    .filter(user => user.employee !== null)
-    .map(({ employee }) => employee) as Employee[];
+  return users.filter(user => user.employee !== null) as (User & {
+    employee: Employee;
+  })[];
 };
