@@ -1,17 +1,14 @@
-'use client';
-
 import RootStyleRegistry from './emotion';
 
 import { ClerkProvider } from '@clerk/nextjs';
 import { Inter } from 'next/font/google';
-import { CacheProvider } from '@chakra-ui/next-js';
-import { ChakraProvider } from '@chakra-ui/react';
+import { Providers } from './providers';
 
 const inter = Inter({ subsets: ['latin'] });
 
-// export const metadata = {
-//   title: 'Malibou',
-// };
+export const metadata = {
+  title: 'Malibou',
+};
 
 const RootLayout = ({
   children,
@@ -29,9 +26,7 @@ const RootLayout = ({
         </head>
         <body className={inter.className}>
           <RootStyleRegistry>
-            <CacheProvider>
-              <ChakraProvider>{children}</ChakraProvider>
-            </CacheProvider>
+            <Providers>{children}</Providers>
           </RootStyleRegistry>
         </body>
       </html>

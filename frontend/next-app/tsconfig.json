@@ -9,8 +9,14 @@
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "types": ["jest", "node"],
     "resolveJsonModule": true,
-    "jsx": "preserve"
+    "jsx": "preserve",
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "strictNullChecks": true
   },
-  "include": ["./**/*.ts", "./**/*.tsx"],
+  "include": ["./**/*.ts", "./**/*.tsx", ".next/types/**/*.ts"],
   "exclude": ["node_modules"]
 }
