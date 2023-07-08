@@ -1,11 +1,32 @@
-import { Employee, Role, User } from '@prisma/client';
+import {
+  Employee as EmployeeModel,
+  Role,
+  User as UserModel,
+} from '@prisma/client';
 import { prisma } from './prisma';
+import { Employee } from 'types/Employee';
+
+export const employeeModelToEmployee = (
+  user: UserModel & { employee: EmployeeModel },
+): Employee => {
+  const { employee } = user;
+
+  return {
+    id: employee.id,
+    firstName: employee.firstName ?? '',
+    lastName: employee.lastName ?? '',
+    jobTitle: employee.jobTitle ?? '',
+    startDate: !employee.startDate ? '' : employee.startDate.toISOString(),
+    email: user.email ?? '',
+    image: user.image,
+  };
+};
 
 export const createEmployee = async (
-  employee: Pick<User, 'email'> & Partial<Employee>,
+  employee: Pick<UserModel, 'email'> & Partial<EmployeeModel>,
   orgId: number,
   role: Role,
-): Promise<User> => {
+): Promise<UserModel> => {
   const { email, firstName, lastName, jobTitle, startDate } = employee;
   const createdEmployee = await prisma.user.create({
     data: {
@@ -36,18 +57,20 @@ export const createEmployee = async (
 
 export const getOrganizationEmployees = async (
   clerkOrganizationId: string,
-): Promise<(User & { employee: Employee })[]> => {
+): Promise<Employee[]> => {
   const organizationAndMembers = await prisma.organization.findUnique({
     where: { clerkId: clerkOrganizationId },
     include: { users: { include: { user: { include: { employee: true } } } } },
   });
-
-  const users = organizationAndMembers?.users.map(({ user }) => user);
-  if (users === undefined) {
+  if (organizationAndMembers === null) {
     return [];
   }
 
-  return users.filter(user => user.employee !== null) as (User & {
-    employee: Employee;
-  })[];
+  const users = organizationAndMembers.users.map(({ user }) => user);
+
+  const employees = users.filter(
+    user => user.employee !== null,
+  ) as (UserModel & { employee: EmployeeModel })[];
+
+  return employees.map(employeeModelToEmployee);
 };
