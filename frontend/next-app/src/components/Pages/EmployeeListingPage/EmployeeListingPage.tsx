@@ -2,7 +2,7 @@
 
 import { Box, Stack, useDisclosure } from '@chakra-ui/react';
 import { Button } from 'components/Button';
-import { EmployeeListing } from 'components/EmployeeListing';
+import { EmployeeTable } from 'components/EmployeeTable';
 import { NewEmployeeModal } from 'components/NewEmployeeModal';
 import { SidebarWithHeader } from 'components/Sidebar';
 import { BsFillPlusCircleFill } from 'react-icons/bs';
@@ -12,7 +12,7 @@ interface Props {
   employees: Employee[];
 }
 
-export const ClientPage = ({ employees }: Props): JSX.Element => {
+export const EmployeeListingPage = ({ employees }: Props): JSX.Element => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
@@ -25,7 +25,7 @@ export const ClientPage = ({ employees }: Props): JSX.Element => {
             text="Employee"
           />
         </Stack>
-        <EmployeeListing employees={employees} />
+        <EmployeeTable employees={employees} />
         <NewEmployeeModal isOpen={isOpen} onClose={onClose} />
       </Box>
     </SidebarWithHeader>

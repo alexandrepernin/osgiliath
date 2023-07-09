@@ -1,9 +1,5 @@
-'use client';
+import { DashboardPage as ClientPage } from 'components/Pages/DashboardPage';
 
-import { SidebarWithHeader } from 'components/Sidebar';
-
-const Page = (): JSX.Element => {
-  return <SidebarWithHeader menuIndex={0}>Dashboard</SidebarWithHeader>;
-};
+const Page = (): JSX.Element => <ClientPage />;
 
 export default Page;

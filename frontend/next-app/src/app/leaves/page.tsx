@@ -1,11 +1,5 @@
-'use client';
+import { LeavesListingPage as ClientPage } from 'components/Pages/LeavesListingPage';
 
-import { SidebarWithHeader } from 'components/Sidebar';
-
-const Page = async (): Promise<JSX.Element> => {
-  await Promise.resolve();
-
-  return <SidebarWithHeader menuIndex={2}>Leaves</SidebarWithHeader>;
-};
+const Page = (): JSX.Element => <ClientPage />;
 
 export default Page;

@@ -19,7 +19,7 @@ interface Props {
   employees: Employee[];
 }
 
-export const EmployeeListing = ({ employees }: Props): JSX.Element => {
+export const EmployeeTable = ({ employees }: Props): JSX.Element => {
   return (
     <TableContainer>
       <Table variant="simple" backgroundColor="white" borderRadius="lg">

@@ -1,7 +1,7 @@
 import { auth } from '@clerk/nextjs';
 import { getOrganizationEmployees } from 'backend/services/employee';
 import { Employee } from 'types/Employee';
-import { ClientPage } from './ClientPage';
+import { EmployeeListingPage as ClientPage } from 'components/Pages/EmployeeListingPage';
 
 interface Props {
   employees: Employee[];
