@@ -1,6 +1,9 @@
 import { extendTheme } from '@chakra-ui/react';
 
 const brand = {
+  page: {
+    background: 'gray.100',
+  },
   menu: {
     background: '#052040',
     hovered: '#223954',

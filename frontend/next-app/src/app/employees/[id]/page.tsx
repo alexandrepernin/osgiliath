@@ -1,5 +1,5 @@
-import { EmployeeDetailPage } from 'components/Pages/EmployeeDetailPage';
+import { EmployeeDetailPage as ClientPage } from 'components/Pages/EmployeeDetailPage';
 
-const Page = (): JSX.Element => <EmployeeDetailPage />;
+const Page = (): JSX.Element => <ClientPage />;
 
 export default Page;
