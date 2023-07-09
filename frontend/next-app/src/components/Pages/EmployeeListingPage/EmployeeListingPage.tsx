@@ -1,6 +1,6 @@
 'use client';
 
-import { Box, Stack, useDisclosure } from '@chakra-ui/react';
+import { Box, HStack, useDisclosure } from '@chakra-ui/react';
 import { Button } from 'components/Button';
 import { EmployeeTable } from 'components/EmployeeTable';
 import { NewEmployeeModal } from 'components/NewEmployeeModal';
@@ -16,13 +16,13 @@ export const EmployeeListingPage = ({ employees }: Props): JSX.Element => {
 
   return (
     <Box padding="4">
-      <Stack direction="row" spacing={4} justify="flex-end" marginBottom="3">
+      <HStack spacing={4} justify="flex-end" marginBottom="3">
         <Button
           onClick={onOpen}
           leftIcon={<BsFillPlusCircleFill />}
           text="Employee"
         />
-      </Stack>
+      </HStack>
       <EmployeeTable employees={employees} />
       <NewEmployeeModal isOpen={isOpen} onClose={onClose} />
     </Box>
